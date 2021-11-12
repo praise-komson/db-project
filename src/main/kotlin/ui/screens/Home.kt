@@ -1,4 +1,4 @@
-package screens
+package ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,18 +10,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import components.NavBarLarge
-import theme.InkDarkest
-import theme.InkLighter
-import theme.RegularTightMedium
-import theme.SmallTightRegular
+import ui.components.NavBarLarge
+import ui.theme.InkDarkest
+import ui.theme.InkLighter
+import ui.theme.RegularTightMedium
+import ui.theme.SmallTightRegular
 
 @Composable
 fun Home(

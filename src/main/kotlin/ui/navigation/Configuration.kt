@@ -1,4 +1,4 @@
-package navigation
+package ui.navigation
 
 import com.arkivanov.essenty.parcelable.Parcelable
 

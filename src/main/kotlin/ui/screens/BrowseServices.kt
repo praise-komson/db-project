@@ -1,4 +1,4 @@
-package screens
+package ui.screens
 
 import PlaceholderDescription
 import androidx.compose.foundation.background
@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import components.NavBarStandard
-import theme.*
+import ui.components.NavBarStandard
+import ui.theme.*
 
 @Composable
 fun BrowseServices() {

@@ -1,4 +1,4 @@
-package components
+package ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -9,7 +9,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import theme.Title2
+import ui.theme.Title2
 
 @Composable
 fun NavBarLarge(
