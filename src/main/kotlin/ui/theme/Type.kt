@@ -26,64 +26,91 @@ val Inter = FontFamily(
 )
 
 val Title2 = TextStyle(
-    color = InkDarkest,
     fontFamily = Inter,
     fontSize = 32.sp,
     fontWeight = FontWeight.Bold
 )
 
+val Title3 = TextStyle(
+    fontFamily = Inter,
+    fontSize = 18.sp,
+    fontWeight = FontWeight.Bold,
+    lineHeight = 24.sp
+)
+
 val LargeRegular = TextStyle(
-    color = InkDarkest,
     fontFamily = Inter,
     fontSize = 18.sp,
     fontWeight = FontWeight.Normal
 )
 
-val LargeNormalBold = TextStyle(
-    color = InkDarkest,
+val LargeNoneMedium = TextStyle(
     fontFamily = Inter,
     fontSize = 18.sp,
-    fontWeight = FontWeight.Bold
+    fontWeight = FontWeight.Medium
+)
+
+val LargeNormalBold = TextStyle(
+    fontFamily = Inter,
+    fontSize = 18.sp,
+    fontWeight = FontWeight.Bold,
+    lineHeight = 24.sp
 )
 
 val LargeTightBold = TextStyle(
-    color = InkDarkest,
     fontFamily = Inter,
     fontSize = 18.sp,
     fontWeight = FontWeight.Bold
 )
 
 val RegularTightMedium = TextStyle(
-    color = InkDarkest,
     fontFamily = Inter,
     fontSize = 16.sp,
     fontWeight = FontWeight.Medium
 )
 
+val RegularNoneRegular = TextStyle(
+    fontFamily = Inter,
+    fontSize = 16.sp,
+    fontWeight = FontWeight.Normal,
+    lineHeight = 16.sp
+)
+
+val RegularNormalMedium = TextStyle(
+    fontFamily = Inter,
+    fontSize = 16.sp,
+    fontWeight = FontWeight.Medium,
+    lineHeight = 24.sp
+)
+
 val SmallNormalRegular = TextStyle(
-    color = InkDarkest,
     fontFamily = Inter,
     fontSize = 14.sp,
     fontWeight = FontWeight.Normal
 )
 
 val SmallTightRegular = TextStyle(
-    color = InkDarkest,
     fontFamily = Inter,
     fontSize = 14.sp,
     fontWeight = FontWeight.Normal
 )
 
 val SmallTightMedium = TextStyle(
-    color = InkDarkest,
     fontFamily = Inter,
     fontSize = 14.sp,
     fontWeight = FontWeight.Medium
 )
 
-val TinyNormalMedium = TextStyle(
-    color = InkDarkest,
+val TinyNoneRegular = TextStyle(
     fontFamily = Inter,
     fontSize = 12.sp,
-    fontWeight = FontWeight.Medium
+    fontWeight = FontWeight.Normal,
+    lineHeight = 12.sp
+)
+
+val TinyNormalMedium = TextStyle(
+    fontFamily = Inter,
+    fontSize = 12.sp,
+    fontWeight = FontWeight.Medium,
+    lineHeight = 12.sp
 )

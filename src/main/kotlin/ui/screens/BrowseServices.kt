@@ -13,16 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import ui.components.ExpertChip
 import ui.components.NavBarStandard
+import ui.components.ScreenLayout
 import ui.theme.*
 
 @Composable
-fun BrowseServices() {
-    Column(
-        modifier = Modifier
-            .background(MaterialTheme.colors.background)
-            .fillMaxSize()
-    ) {
+fun BrowseServices(
+    onSelectService: () -> Unit
+) {
+    ScreenLayout {
         NavBarStandard(
             title = { Text("New session") }
         )
@@ -31,17 +31,21 @@ fun BrowseServices() {
                 if (index > 0) {
                     Divider()
                 }
-                ServiceRow()
+                ServiceRow(
+                    modifier = Modifier
+                        .clickable { onSelectService() }
+                )
             }
         }
     }
 }
 
 @Composable
-fun ServiceRow() {
+fun ServiceRow(
+    modifier: Modifier = Modifier
+) {
     Column(
-        modifier = Modifier
-            .clickable {  }
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp, vertical = 12.dp)
     ) {
@@ -54,29 +58,10 @@ fun ServiceRow() {
                     text = "How to read indicators",
                     style = LargeTightBold
                 )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                ExpertChip(
                     modifier = Modifier
                         .padding(vertical = 8.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .size(24.dp)
-                            .clip(CircleShape)
-                            .background(Color.LightGray)
-                    )
-                    Text(
-                        text = "by ",
-                        color = InkLighter,
-                        style = SmallTightRegular
-                    )
-                    Text(
-                        text = "Rick Astley",
-                        color = InkLighter,
-                        style = SmallTightMedium
-                    )
-                }
+                )
             }
             Column(
                 horizontalAlignment = Alignment.End

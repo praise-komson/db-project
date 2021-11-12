@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import ui.components.NavBarLarge
+import ui.components.ScreenLayout
 import ui.theme.InkDarkest
 import ui.theme.InkLighter
 import ui.theme.RegularTightMedium
@@ -25,10 +26,7 @@ import ui.theme.SmallTightRegular
 fun Home(
     onNewSessionClick: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .background(MaterialTheme.colors.background)
-    ) {
+    ScreenLayout {
         NavBarLarge(
             title = { Text("My Sessions") },
             actionButtons = {
