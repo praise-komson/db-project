@@ -6,11 +6,11 @@ services:
     container_name: doji-mysql
     restart: unless-stopped
     ports:
-      - 3306:3306
+      - "3306:3306"
 
   mongo:
     image: mongo:latest
     container_name: doji-mongo
     restart: unless-stopped
     ports:
-      - 27017:27017
+      - "27017:27017"
