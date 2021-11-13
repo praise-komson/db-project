@@ -19,7 +19,10 @@ import ui.theme.SmallNormalRegular
 import kotlin.math.ceil
 
 @Composable
-fun NewSession() {
+fun NewSession(
+    expertUsername: String,
+    serviceName: String
+) {
     Column {
         ScreenLayout(modifier = Modifier.weight(1f)) {
             NavBarStandard(title = { Text("New session") })

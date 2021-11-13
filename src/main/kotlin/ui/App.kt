@@ -28,7 +28,12 @@ fun App() {
                     )
                 is Configuration.BrowseServices ->
                     BrowseServices(
-                        onSelectService = { router.push(Configuration.NewSession) }
+                        onSelectService = { expertUsername, serviceName ->
+                            val newConfig = Configuration.NewSession(
+                                expertUsername, serviceName
+                            )
+                            router.push(newConfig)
+                        }
                     )
                 is Configuration.NewSession ->
                     NewSession()

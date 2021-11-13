@@ -20,7 +20,7 @@ import ui.theme.*
 
 @Composable
 fun BrowseServices(
-    onSelectService: () -> Unit
+    onSelectService: (expertUsername: String, serviceName: String) -> Unit
 ) {
     ScreenLayout {
         NavBarStandard(
@@ -33,7 +33,7 @@ fun BrowseServices(
                 }
                 ServiceRow(
                     modifier = Modifier
-                        .clickable { onSelectService() }
+                        .clickable { onSelectService("dummy_expert", "dummy_service") }
                 )
             }
         }
