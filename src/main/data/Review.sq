@@ -1,0 +1,8 @@
+CREATE TABLE Review(
+    user_id VARCHAR(255) NOT NULL,
+    expert_id VARCHAR(255) NOT NULL,
+    content TEXT(500) NOT NULL,
+    rating TINYINT NOT NULL,
+    PRIMARY KEY (user_id, expert_id),
+    CHECK (rating BETWEEN 1 AND 5)
+);

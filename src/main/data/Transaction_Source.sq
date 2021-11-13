@@ -1,0 +1,4 @@
+CREATE TABLE Transaction_Source (
+    source_id INT(4) NOT NULL UNIQUE,
+    PRIMARY KEY (source_id)
+);

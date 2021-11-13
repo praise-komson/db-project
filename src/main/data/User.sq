@@ -1,0 +1,11 @@
+CREATE TABLE User (
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    display_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    coin_balance BIGINT(8) NOT NULL,
+    online_status BOOLEAN NOT NULL,
+    register_timestamp TIMESTAMP NOT NULL,
+    profile_pic_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (username)
+);

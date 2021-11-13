@@ -1,0 +1,8 @@
+CREATE TABLE Message (
+    id INT(4) NOT NULL UNIQUE,
+    timestamp TIMESTAMP NOT NULL,
+    text TEXT(500) NOT NULL,
+    chat_id VARCHAR(255) NOT NULL,
+    sender_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+)

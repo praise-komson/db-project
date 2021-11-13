@@ -1,0 +1,10 @@
+CREATE TABLE Attachment (
+    file_id INT(4) NOT NULL,
+    message_id INT(4) NOT NULL,
+    url VARCHAR(2048) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    size INT(4) NOT NULL,
+    mime_type VARCHAR(255) NOT NULL,
+    attached_message_id INT(4) NOT NULL,
+    PRIMARY KEY (file_id, message_id)
+);

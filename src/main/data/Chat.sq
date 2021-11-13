@@ -1,0 +1,4 @@
+CREATE TABLE Chat(
+    id INT(4) NOT NULL UNIQUE,
+    PRIMARY KEY (id)
+);

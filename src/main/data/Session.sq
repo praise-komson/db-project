@@ -1,0 +1,15 @@
+CREATE TABLE Session (
+    id INT(4) NOT NULL UNIQUE,
+    meeting_provider_id VARCHAR(255) NOT NULL,
+    fee BIGINT(8) NOT NULL,
+    coin_on_hold BIGINT(8) NOT NULL,
+    status ENUM('PENDING', 'ACCEPTED', 'ENDED', 'REVIEWED', 'CANCELED') NOT NULL,
+    topic VARCHAR(255) NOT NULL,
+    duration INT(4) NOT NULL,
+    start_time TIMESTAMP NOT NULL,
+    source_id INT(4) NOT NULL,
+    creator_id VARCHAR(255) NOT NULL,
+    expert_id VARCHAR(255) NOT NULL,
+    service_name VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
