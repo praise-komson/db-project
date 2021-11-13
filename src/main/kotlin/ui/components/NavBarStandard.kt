@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ui.navigation.LocalBackPressedDispatcher
-import ui.theme.LargeRegular
+import ui.theme.LargeNoneRegular
 
 @Composable
 fun NavBarStandard(
@@ -37,7 +37,7 @@ fun NavBarStandard(
             }
         }
         Box(modifier = Modifier.align(Alignment.Center)) {
-            CompositionLocalProvider(LocalTextStyle provides LargeRegular) {
+            CompositionLocalProvider(LocalTextStyle provides LargeNoneRegular) {
                 title()
             }
         }
