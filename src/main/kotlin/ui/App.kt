@@ -5,10 +5,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.router.push
 import ui.navigation.Configuration
 import ui.navigation.rememberRouter
-import ui.screens.BrowseServices
-import ui.screens.MySessions
-import ui.screens.NewSession
-import ui.screens.SessionRequests
+import ui.screens.*
 import ui.theme.AppTheme
 
 @Composable
@@ -23,6 +20,8 @@ fun App() {
     AppTheme {
         Children(routerState = router.state) { screen ->
             when (val config = screen.configuration) {
+                is Configuration.Profile ->
+                    Profile()
                 is Configuration.MySessions ->
                     MySessions(
                         onNewSessionClick = { router.push(Configuration.BrowseServices) }
