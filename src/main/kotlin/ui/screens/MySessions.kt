@@ -23,7 +23,7 @@ import ui.theme.RegularTightMedium
 import ui.theme.SmallTightRegular
 
 @Composable
-fun Home(
+fun MySessions(
     onNewSessionClick: () -> Unit
 ) {
     ScreenLayout {

@@ -6,7 +6,7 @@ import com.arkivanov.decompose.router.push
 import ui.navigation.Configuration
 import ui.navigation.rememberRouter
 import ui.screens.BrowseServices
-import ui.screens.Home
+import ui.screens.MySessions
 import ui.screens.NewSession
 import ui.theme.AppTheme
 
@@ -15,15 +15,15 @@ import ui.theme.AppTheme
 fun App() {
     val router =
         rememberRouter(
-            initialConfiguration = { Configuration.Home },
+            initialConfiguration = { Configuration.MySessions },
             configurationClass = Configuration::class
         )
 
     AppTheme {
         Children(routerState = router.state) { screen ->
-            when (screen.configuration) {
-                is Configuration.Home ->
-                    Home(
+            when (val config = screen.configuration) {
+                is Configuration.MySessions ->
+                    MySessions(
                         onNewSessionClick = { router.push(Configuration.BrowseServices) }
                     )
                 is Configuration.BrowseServices ->
