@@ -8,6 +8,7 @@ import ui.navigation.rememberRouter
 import ui.screens.BrowseServices
 import ui.screens.MySessions
 import ui.screens.NewSession
+import ui.screens.SessionRequests
 import ui.theme.AppTheme
 
 @Composable
@@ -36,7 +37,9 @@ fun App() {
                         }
                     )
                 is Configuration.NewSession ->
-                    NewSession()
+                    NewSession(config.expertUsername, config.serviceName)
+                is Configuration.SessionRequests ->
+                    SessionRequests()
             }.let {}
         }
     }
