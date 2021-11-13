@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.5.31"
     id("org.jetbrains.compose") version "1.0.0-beta5"
+    id("com.squareup.sqldelight") version "1.5.2"
 }
 
 group = "me.suphon"
@@ -20,6 +21,7 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation("com.arkivanov.decompose:decompose:0.4.0")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains:0.4.0")
+    implementation("com.squareup.sqldelight:jdbc-driver:1.5.2")
 }
 
 tasks.withType<KotlinCompile>() {
@@ -38,5 +40,13 @@ compose.desktop {
                 setDockNameSameAsPackageName = true
             }
         }
+    }
+}
+
+sqldelight {
+    database("Database") {
+        packageName = "db"
+        deriveSchemaFromMigrations = true
+        dialect = "mysql"
     }
 }
