@@ -1,0 +1,69 @@
+# Attachment
+ALTER TABLE Attachment
+ADD FOREIGN KEY (file_id) REFERENCES File(id),
+ADD FOREIGN KEY (message_id) REFERENCES Message(id);
+
+# Chat Member
+ALTER TABLE Chat_Member
+ADD FOREIGN KEY (chat_id) REFERENCES Chat(id),
+ADD FOREIGN KEY (user_id) REFERENCES User(username);
+
+# Doji Coin Transaction
+ALTER TABLE Doji_Coin_Transaction
+ADD FOREIGN KEY (source_id) REFERENCES Transaction_Source(source_id),
+ADD FOREIGN KEY (user_id) REFERENCES User(username);
+
+#Experience
+ALTER TABLE Experience
+ADD FOREIGN KEY (expert_id) REFERENCES Expert(username);
+
+# Expert
+ALTER TABLE Expert
+ADD FOREIGN KEY (username) REFERENCES User(username),
+ADD FOREIGN KEY (verified_by_admin_id) REFERENCES Admin(username);
+
+# Expert Application
+ALTER TABLE Expert_Application
+ADD FOREIGN KEY (username) REFERENCES User(username);
+
+# Friend
+ALTER TABLE Friend
+ADD FOREIGN KEY (user1_id) REFERENCES User(username),
+ADD FOREIGN KEY (user2_id) REFERENCES User(username);
+
+# Message
+ALTER TABLE Message
+ADD FOREIGN KEY (chat_id) REFERENCES Chat(id),
+ADD FOREIGN KEY (sender_id) REFERENCES User(username);
+
+# Payment Method
+ALTER TABLE Payment_Method
+ADD FOREIGN KEY (source_id) REFERENCES Transaction_Source(source_id),
+ADD FOREIGN KEY (owner_id) REFERENCES User(username);
+
+# Review
+ALTER TABLE Review
+ADD FOREIGN KEY (user_id) REFERENCES User(username),
+ADD FOREIGN KEY (expert_id) REFERENCES Expert(username);
+
+# Service
+ALTER TABLE Service
+ADD FOREIGN KEY (expert_id) REFERENCES Expert(Username);
+
+# Session
+ALTER TABLE Session
+ADD FOREIGN KEY (meeting_provider_id) REFERENCES User(username),
+ADD FOREIGN KEY (source_id) REFERENCES Transaction_Source(source_id),
+ADD FOREIGN KEY (creator_id) REFERENCES User(username),
+ADD FOREIGN KEY (expert_id) REFERENCES Expert(username),
+ADD FOREIGN KEY (service_name) REFERENCES Service(name);
+
+# Session Participant
+ALTER TABLE Session_Participant
+ADD FOREIGN KEY (session_id) REFERENCES Session(id),
+ADD FOREIGN KEY (user_id) REFERENCES User(username);
+
+# User
+ALTER TABLE User
+ADD FOREIGN KEY (profile_pic_id) REFERENCES File(id);
+
