@@ -2,5 +2,4 @@ CREATE TABLE Expert (
     username VARCHAR(255) NOT NULL UNIQUE,
     verified_by_admin_id VARCHAR(255) NOT NULL,
     PRIMARY KEY (username)
-#     FOREIGN KEY (username) REFERENCES User(username)
 );

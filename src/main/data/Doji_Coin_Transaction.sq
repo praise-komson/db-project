@@ -4,7 +4,7 @@ CREATE TABLE Doji_Coin_Transaction(
     amount BIGINT(8) NOT NULL,
     timestamp TIMESTAMP NOT NULL,
     external_transaction_id VARCHAR(255) NOT NULL,
-    source_id VARCHAR(255),
-    user_id VARCHAR(255),
+    source_id INT(4) NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
     PRIMARY KEY (id)
 );
