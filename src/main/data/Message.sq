@@ -5,4 +5,4 @@ CREATE TABLE Message (
     chat_id VARCHAR(255) NOT NULL,
     sender_id VARCHAR(255) NOT NULL,
     PRIMARY KEY (id)
-)
+);

@@ -6,4 +6,4 @@ CREATE TABLE File (
     size INT(4) NOT NULL,
     mime_type VARCHAR(255) NOT NULL,
     PRIMARY KEY (id, bucket)
-)
+);
