@@ -36,6 +36,8 @@ fun App() {
                             MySessions(
                                 onNewSessionClick = { router.push(Configuration.BrowseServices) }
                             )
+                        is Configuration.MyRequests ->
+                            MyRequests()
                         is Configuration.BrowseServices ->
                             BrowseServices(
                                 onSelectService = { expertUsername, serviceName ->
@@ -62,7 +64,7 @@ fun BottomNavHost(
     router: Router<Configuration, Any>
 ) {
     when (val config = router.state.subscribeAsState().value.activeChild.configuration) {
-        Configuration.MySessions, Configuration.Profile, Configuration.SessionRequests -> {
+        Configuration.MySessions, Configuration.MyRequests, Configuration.Profile, Configuration.SessionRequests -> {
             BottomNav(
                 currentConfig = config,
                 onSetConfig = { router.replaceCurrent(it) }

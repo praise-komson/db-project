@@ -9,4 +9,6 @@ sealed class Configuration : Parcelable {
     data class NewSession(val expertUsername: String, val serviceName: String) : Configuration()
 
     object SessionRequests : Configuration()
+    object MyRequests : Configuration()
+
 }

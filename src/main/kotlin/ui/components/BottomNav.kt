@@ -23,6 +23,7 @@ import ui.theme.TinyNoneRegular
 
 val targets = listOf(
     BottomNavTarget(Configuration.MySessions, "icons/calendar.svg", "Sessions"),
+    BottomNavTarget(Configuration.MyRequests, "icons/noti.svg", "Requests"),
     BottomNavTarget(Configuration.Profile, "icons/user.svg", "Profile"),
 )
 
