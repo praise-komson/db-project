@@ -1,0 +1,233 @@
+# Admin
+CREATE TABLE Admin (
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    PRIMARY KEY (username)
+);
+
+# Attachment
+CREATE TABLE Attachment (
+    file_id INT(4) NOT NULL,
+    message_id INT(4) NOT NULL,
+    PRIMARY KEY (file_id, message_id)
+);
+
+# Chat
+CREATE TABLE Chat(
+    id INT(4) NOT NULL UNIQUE,
+    PRIMARY KEY (id)
+);
+
+# Chat Member
+CREATE TABLE Chat_Member(
+    chat_id INT(4) NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (chat_id, user_id)
+);
+
+# Doji Coin Transaction
+CREATE TABLE Doji_Coin_Transaction(
+    id INT(4) NOT NULL UNIQUE,
+    description TEXT(500) NOT NULL,
+    amount BIGINT(8) NOT NULL,
+    timestamp TIMESTAMP NOT NULL,
+    external_transaction_id VARCHAR(255) NOT NULL,
+    source_id INT(4) NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+# Experience
+CREATE TABLE Experience(
+  expert_id VARCHAR(255) NOT NULL,
+  field VARCHAR(255) NOT NULL,
+  description TEXT(500) NOT NULL,
+  PRIMARY KEY (expert_id, field)
+);
+
+# Expert
+CREATE TABLE Expert (
+    username VARCHAR(255) NOT NULL UNIQUE,
+    verified_by_admin_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (username)
+);
+
+# Expert Application
+CREATE TABLE Expert_Application (
+    username VARCHAR(255) NOT NULL,
+    timestamp TIMESTAMP NOT NULL,
+    description TEXT(500) NOT NULL,
+    PRIMARY KEY (username, timestamp)
+);
+
+# File
+CREATE TABLE File (
+    id INT(4) NOT NULL,
+    bucket VARCHAR(255) NOT NULL,
+    url VARCHAR(2048) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    size INT(4) NOT NULL,
+    mime_type VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id, bucket)
+);
+
+#Friend
+CREATE TABLE Friend(
+    user1_id VARCHAR(255) NOT NULL,
+    user2_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (user1_id, user2_id)
+);
+
+#Message
+CREATE TABLE Message (
+    id INT(4) NOT NULL UNIQUE,
+    timestamp TIMESTAMP NOT NULL,
+    text TEXT(500) NOT NULL,
+    chat_id VARCHAR(255) NOT NULL,
+    sender_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+#Payment Method
+CREATE TABLE Payment_Method (
+    id VARCHAR(255) NOT NULL,
+    provider VARCHAR(255) NOT NULL,
+    display_name VARCHAR(255) NOT NULL,
+    source_id INT(4) NOT NULL,
+    owner_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id, provider)
+);
+
+#Review
+CREATE TABLE Review(
+    user_id VARCHAR(255) NOT NULL,
+    expert_id VARCHAR(255) NOT NULL,
+    content TEXT(500) NOT NULL,
+    rating TINYINT NOT NULL,
+    PRIMARY KEY (user_id, expert_id),
+    CHECK (rating BETWEEN 1 AND 5)
+);
+
+#Service
+CREATE TABLE Service (
+  expert_id VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  fee BIGINT(8) NOT NULL,
+  description TEXT(500) NOT NULL,
+  PRIMARY KEY (expert_id, name)
+);
+
+#Session
+CREATE TABLE Session (
+    id INT(4) NOT NULL UNIQUE,
+    meeting_provider_id VARCHAR(255) NOT NULL,
+    fee BIGINT(8) NOT NULL,
+    coin_on_hold BIGINT(8) NOT NULL,
+    status ENUM('PENDING', 'ACCEPTED', 'ENDED', 'REVIEWED', 'CANCELED') NOT NULL,
+    topic VARCHAR(255) NOT NULL,
+    duration INT(4) NOT NULL,
+    start_time TIMESTAMP NOT NULL,
+    source_id INT(4) NOT NULL,
+    creator_id VARCHAR(255) NOT NULL,
+    expert_id VARCHAR(255) NOT NULL,
+    service_name VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+#Session Participant
+CREATE TABLE Session_Participant (
+  session_id INT(4) NOT NULL,
+  user_id VARCHAR(255) NOT NULL,
+  PRIMARY KEY (session_id, user_id)
+);
+
+#Transaction Source
+CREATE TABLE Transaction_Source (
+    source_id INT(4) NOT NULL UNIQUE,
+    PRIMARY KEY (source_id)
+);
+
+#User
+CREATE TABLE User (
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    display_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    coin_balance BIGINT(8) NOT NULL,
+    online_status BOOLEAN NOT NULL,
+    register_timestamp TIMESTAMP NOT NULL,
+    profile_pic_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (username)
+);
+
+
+# FOREIGN KEY
+
+# Attachment
+ALTER TABLE Attachment
+    ADD FOREIGN KEY (file_id) REFERENCES File(id),
+    ADD FOREIGN KEY (message_id) REFERENCES Message(id);
+
+# Chat Member
+ALTER TABLE Chat_Member
+    ADD FOREIGN KEY (chat_id) REFERENCES Chat(id),
+    ADD FOREIGN KEY (user_id) REFERENCES User(username);
+
+# Doji Coin Transaction
+ALTER TABLE Doji_Coin_Transaction
+    ADD FOREIGN KEY (source_id) REFERENCES Transaction_Source(source_id),
+    ADD FOREIGN KEY (user_id) REFERENCES User(username);
+
+#Experience
+ALTER TABLE Experience
+    ADD FOREIGN KEY (expert_id) REFERENCES Expert(username);
+
+# Expert
+ALTER TABLE Expert
+    ADD FOREIGN KEY (username) REFERENCES User(username),
+    ADD FOREIGN KEY (verified_by_admin_id) REFERENCES Admin(username);
+
+# Expert Application
+ALTER TABLE Expert_Application
+    ADD FOREIGN KEY (username) REFERENCES User(username);
+
+# Friend
+ALTER TABLE Friend
+    ADD FOREIGN KEY (user1_id) REFERENCES User(username),
+    ADD FOREIGN KEY (user2_id) REFERENCES User(username);
+
+# Message
+ALTER TABLE Message
+    ADD FOREIGN KEY (chat_id) REFERENCES Chat(id),
+    ADD FOREIGN KEY (sender_id) REFERENCES User(username);
+
+# Payment Method
+ALTER TABLE Payment_Method
+    ADD FOREIGN KEY (source_id) REFERENCES Transaction_Source(source_id),
+    ADD FOREIGN KEY (owner_id) REFERENCES User(username);
+
+# Review
+ALTER TABLE Review
+    ADD FOREIGN KEY (user_id) REFERENCES User(username),
+    ADD FOREIGN KEY (expert_id) REFERENCES Expert(username);
+
+# Service
+ALTER TABLE Service
+    ADD FOREIGN KEY (expert_id) REFERENCES Expert(Username);
+
+# Session
+ALTER TABLE Session
+    ADD FOREIGN KEY (meeting_provider_id) REFERENCES User(username),
+    ADD FOREIGN KEY (source_id) REFERENCES Transaction_Source(source_id),
+    ADD FOREIGN KEY (creator_id) REFERENCES User(username),
+    ADD FOREIGN KEY (expert_id) REFERENCES Expert(username),
+    ADD FOREIGN KEY (service_name) REFERENCES Service(name);
+
+# Session Participant
+ALTER TABLE Session_Participant
+    ADD FOREIGN KEY (session_id) REFERENCES Session(id),
+    ADD FOREIGN KEY (user_id) REFERENCES User(username);
+
+# User
+ALTER TABLE User
+    ADD FOREIGN KEY (profile_pic_id) REFERENCES File(id);
