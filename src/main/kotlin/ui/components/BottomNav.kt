@@ -15,13 +15,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import db.UserController
 import ui.navigation.Configuration
 import ui.theme.InkLight
 import ui.theme.PrimaryBase
 import ui.theme.SkyDark
 import ui.theme.TinyNoneRegular
 
-val targets = listOf(
+val userTargets = listOf(
+    BottomNavTarget(Configuration.MySessions, "icons/calendar.svg", "Sessions"),
+    BottomNavTarget(Configuration.Profile, "icons/user.svg", "Profile"),
+)
+
+val expertTargets = listOf(
     BottomNavTarget(Configuration.MySessions, "icons/calendar.svg", "Sessions"),
     BottomNavTarget(Configuration.MyRequests, "icons/noti.svg", "Requests"),
     BottomNavTarget(Configuration.Profile, "icons/user.svg", "Profile"),
@@ -32,6 +38,7 @@ fun BottomNav(
     currentConfig: Configuration,
     onSetConfig: (Configuration) -> Unit
 ) {
+    val targets = if (UserController.isExpert) expertTargets else userTargets
     Surface(
         elevation = 8.dp
     ) {
