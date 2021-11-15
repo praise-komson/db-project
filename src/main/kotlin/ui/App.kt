@@ -10,6 +10,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.arkivanov.decompose.router.Router
 import com.arkivanov.decompose.router.push
 import com.arkivanov.decompose.router.replaceCurrent
+import controller.UserController
 import ui.components.BottomNav
 import ui.navigation.Configuration
 import ui.navigation.rememberRouter
@@ -26,35 +27,39 @@ fun App() {
         )
 
     AppTheme {
-        Column {
-            Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
-                Children(routerState = router.state) { screen ->
-                    when (val config = screen.configuration) {
-                        is Configuration.Profile ->
-                            Profile()
-                        is Configuration.MySessions ->
-                            MySessions(
-                                onNewSessionClick = { router.push(Configuration.BrowseServices) }
-                            )
-                        is Configuration.MyRequests ->
-                            MyRequests()
-                        is Configuration.BrowseServices ->
-                            BrowseServices(
-                                onSelectService = { expertUsername, serviceName ->
-                                    val newConfig = Configuration.NewSession(
-                                        expertUsername, serviceName
-                                    )
-                                    router.push(newConfig)
-                                }
-                            )
-                        is Configuration.NewSession ->
-                            NewSession(config.expertUsername, config.serviceName)
-                        is Configuration.SessionRequests ->
-                            SessionRequests()
-                    }.let {}
+        if (UserController.isLoggedIn) {
+            Column {
+                Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                    Children(routerState = router.state) { screen ->
+                        when (val config = screen.configuration) {
+                            is Configuration.Profile ->
+                                Profile()
+                            is Configuration.MySessions ->
+                                MySessions(
+                                    onNewSessionClick = { router.push(Configuration.BrowseServices) }
+                                )
+                            is Configuration.MyRequests ->
+                                MyRequests()
+                            is Configuration.BrowseServices ->
+                                BrowseServices(
+                                    onSelectService = { expertUsername, serviceName ->
+                                        val newConfig = Configuration.NewSession(
+                                            expertUsername, serviceName
+                                        )
+                                        router.push(newConfig)
+                                    }
+                                )
+                            is Configuration.NewSession ->
+                                NewSession(config.expertUsername, config.serviceName)
+                            is Configuration.SessionRequests ->
+                                SessionRequests()
+                        }.let {}
+                    }
                 }
+                BottomNavHost(router)
             }
-            BottomNavHost(router)
+        } else {
+            Login()
         }
     }
 }
