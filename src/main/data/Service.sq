@@ -1,7 +1,0 @@
-CREATE TABLE Service (
-  expert_id VARCHAR(255) NOT NULL,
-  name VARCHAR(255) NOT NULL,
-  fee BIGINT(8) NOT NULL,
-  description TEXT(500) NOT NULL,
-  PRIMARY KEY (expert_id, name)
-);

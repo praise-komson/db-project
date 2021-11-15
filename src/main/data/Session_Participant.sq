@@ -1,5 +1,0 @@
-CREATE TABLE Session_Participant (
-  session_id INT(4) NOT NULL,
-  user_id VARCHAR(255) NOT NULL,
-  PRIMARY KEY (session_id, user_id)
-);

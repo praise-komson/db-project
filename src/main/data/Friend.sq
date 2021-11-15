@@ -1,5 +1,0 @@
-CREATE TABLE Friend(
-    user1_id VARCHAR(255) NOT NULL,
-    user2_id VARCHAR(255) NOT NULL,
-    PRIMARY KEY (user1_id, user2_id)
-);

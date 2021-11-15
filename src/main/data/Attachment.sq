@@ -1,5 +1,0 @@
-CREATE TABLE Attachment (
-    file_id INT(4) NOT NULL,
-    message_id INT(4) NOT NULL,
-    PRIMARY KEY (file_id, message_id)
-);

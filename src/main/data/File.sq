@@ -1,9 +1,0 @@
-CREATE TABLE File (
-    id INT(4) NOT NULL,
-    bucket VARCHAR(255) NOT NULL,
-    url VARCHAR(2048) NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    size INT(4) NOT NULL,
-    mime_type VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id, bucket)
-);

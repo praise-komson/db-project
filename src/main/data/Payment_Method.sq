@@ -1,8 +1,0 @@
-CREATE TABLE Payment_Method (
-    id VARCHAR(255) NOT NULL,
-    provider VARCHAR(255) NOT NULL,
-    display_name VARCHAR(255) NOT NULL,
-    source_id INT(4) NOT NULL,
-    owner_id VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id, provider)
-);

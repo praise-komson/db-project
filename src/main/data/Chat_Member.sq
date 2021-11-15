@@ -1,5 +1,0 @@
-CREATE TABLE Chat_Member(
-    chat_id INT(4) NOT NULL,
-    user_id VARCHAR(255) NOT NULL,
-    PRIMARY KEY (chat_id, user_id)
-);

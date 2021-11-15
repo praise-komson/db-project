@@ -1,6 +1,0 @@
-CREATE TABLE Expert_Application (
-    username VARCHAR(255) NOT NULL,
-    timestamp TIMESTAMP NOT NULL,
-    description TEXT(500) NOT NULL,
-    PRIMARY KEY (username, timestamp)
-);
