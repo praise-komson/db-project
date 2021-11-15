@@ -1,32 +1,32 @@
-# Admin
-CREATE TABLE Admin (
+-- Admin
+CREATE TABLE admins(
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     PRIMARY KEY (username)
 );
 
-# Attachment
-CREATE TABLE Attachment (
+-- Attachment
+CREATE TABLE attachments(
     file_id INT(4) NOT NULL,
     message_id INT(4) NOT NULL,
     PRIMARY KEY (file_id, message_id)
 );
 
-# Chat
-CREATE TABLE Chat(
+-- Chat
+CREATE TABLE chats(
     id INT(4) NOT NULL UNIQUE,
     PRIMARY KEY (id)
 );
 
-# Chat Member
-CREATE TABLE Chat_Member(
+-- Chat Member
+CREATE TABLE chat_members(
     chat_id INT(4) NOT NULL,
     user_id VARCHAR(255) NOT NULL,
     PRIMARY KEY (chat_id, user_id)
 );
 
-# Doji Coin Transaction
-CREATE TABLE Doji_Coin_Transaction(
+-- Doji Coin Transaction
+CREATE TABLE doji_coin_transactions(
     id INT(4) NOT NULL UNIQUE,
     description TEXT(500) NOT NULL,
     amount BIGINT(8) NOT NULL,
@@ -37,31 +37,31 @@ CREATE TABLE Doji_Coin_Transaction(
     PRIMARY KEY (id)
 );
 
-# Experience
-CREATE TABLE Experience(
+-- Experience
+CREATE TABLE experiences(
   expert_id VARCHAR(255) NOT NULL,
   field VARCHAR(255) NOT NULL,
   description TEXT(500) NOT NULL,
   PRIMARY KEY (expert_id, field)
 );
 
-# Expert
-CREATE TABLE Expert (
+-- Expert
+CREATE TABLE experts(
     username VARCHAR(255) NOT NULL UNIQUE,
     verified_by_admin_id VARCHAR(255) NOT NULL,
     PRIMARY KEY (username)
 );
 
-# Expert Application
-CREATE TABLE Expert_Application (
+-- Expert Application
+CREATE TABLE expert_applications(
     username VARCHAR(255) NOT NULL,
     timestamp TIMESTAMP NOT NULL,
     description TEXT(500) NOT NULL,
     PRIMARY KEY (username, timestamp)
 );
 
-# File
-CREATE TABLE File (
+-- File
+CREATE TABLE files(
     id INT(4) NOT NULL,
     bucket VARCHAR(255) NOT NULL,
     url VARCHAR(2048) NOT NULL,
@@ -71,25 +71,25 @@ CREATE TABLE File (
     PRIMARY KEY (id, bucket)
 );
 
-#Friend
-CREATE TABLE Friend(
+-- Friend
+CREATE TABLE friends(
     user1_id VARCHAR(255) NOT NULL,
     user2_id VARCHAR(255) NOT NULL,
     PRIMARY KEY (user1_id, user2_id)
 );
 
-#Message
-CREATE TABLE Message (
+-- Message
+CREATE TABLE messages(
     id INT(4) NOT NULL UNIQUE,
     timestamp TIMESTAMP NOT NULL,
     text TEXT(500) NOT NULL,
-    chat_id VARCHAR(255) NOT NULL,
+    chat_id INT(4) NOT NULL,
     sender_id VARCHAR(255) NOT NULL,
     PRIMARY KEY (id)
 );
 
-#Payment Method
-CREATE TABLE Payment_Method (
+-- Payment Method
+CREATE TABLE payment_methods(
     id VARCHAR(255) NOT NULL,
     provider VARCHAR(255) NOT NULL,
     display_name VARCHAR(255) NOT NULL,
@@ -98,27 +98,28 @@ CREATE TABLE Payment_Method (
     PRIMARY KEY (id, provider)
 );
 
-#Review
-CREATE TABLE Review(
+-- Review
+CREATE TABLE reviews(
     user_id VARCHAR(255) NOT NULL,
     expert_id VARCHAR(255) NOT NULL,
     content TEXT(500) NOT NULL,
     rating TINYINT NOT NULL,
-    PRIMARY KEY (user_id, expert_id),
-    CHECK (rating BETWEEN 1 AND 5)
+    PRIMARY KEY (user_id, expert_id)
+    -- CHECK (rating BETWEEN 1 AND 5)
+    -- seems to be incompatible with SQLDelight schema reader
 );
 
-#Service
-CREATE TABLE Service (
+-- Service
+CREATE TABLE services(
   expert_id VARCHAR(255) NOT NULL,
-  name VARCHAR(255) NOT NULL,
+  sname VARCHAR(255) NOT NULL,
   fee BIGINT(8) NOT NULL,
   description TEXT(500) NOT NULL,
-  PRIMARY KEY (expert_id, name)
+  PRIMARY KEY (expert_id, sname)
 );
 
-#Session
-CREATE TABLE Session (
+-- Session
+CREATE TABLE sessions(
     id INT(4) NOT NULL UNIQUE,
     meeting_provider_id VARCHAR(255) NOT NULL,
     fee BIGINT(8) NOT NULL,
@@ -134,21 +135,21 @@ CREATE TABLE Session (
     PRIMARY KEY (id)
 );
 
-#Session Participant
-CREATE TABLE Session_Participant (
+-- Session Participant
+CREATE TABLE session_participants(
   session_id INT(4) NOT NULL,
   user_id VARCHAR(255) NOT NULL,
   PRIMARY KEY (session_id, user_id)
 );
 
-#Transaction Source
-CREATE TABLE Transaction_Source (
+-- Transaction Source
+CREATE TABLE transaction_sources(
     source_id INT(4) NOT NULL UNIQUE,
     PRIMARY KEY (source_id)
 );
 
-#User
-CREATE TABLE User (
+-- User
+CREATE TABLE users(
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     display_name VARCHAR(255) NOT NULL,
@@ -156,78 +157,76 @@ CREATE TABLE User (
     coin_balance BIGINT(8) NOT NULL,
     online_status BOOLEAN NOT NULL,
     register_timestamp TIMESTAMP NOT NULL,
-    profile_pic_id VARCHAR(255) NOT NULL,
+    profile_pic_id INT(4) NOT NULL,
     PRIMARY KEY (username)
 );
 
 
-# FOREIGN KEY
+-- FOREIGN KEY
 
-# Attachment
-ALTER TABLE Attachment
-    ADD FOREIGN KEY (file_id) REFERENCES File(id),
-    ADD FOREIGN KEY (message_id) REFERENCES Message(id);
+-- Attachment
+ALTER TABLE attachments
+    ADD FOREIGN KEY (file_id) REFERENCES files(id),
+    ADD FOREIGN KEY (message_id) REFERENCES messages(id);
 
-# Chat Member
-ALTER TABLE Chat_Member
-    ADD FOREIGN KEY (chat_id) REFERENCES Chat(id),
-    ADD FOREIGN KEY (user_id) REFERENCES User(username);
+-- Chat Member
+ALTER TABLE chat_members
+    ADD FOREIGN KEY (chat_id) REFERENCES chats(id),
+    ADD FOREIGN KEY (user_id) REFERENCES users(username);
 
-# Doji Coin Transaction
-ALTER TABLE Doji_Coin_Transaction
-    ADD FOREIGN KEY (source_id) REFERENCES Transaction_Source(source_id),
-    ADD FOREIGN KEY (user_id) REFERENCES User(username);
+-- Doji Coin Transaction
+ALTER TABLE doji_coin_transactions
+    ADD FOREIGN KEY (source_id) REFERENCES transaction_sources(source_id),
+    ADD FOREIGN KEY (user_id) REFERENCES users(username);
 
-#Experience
-ALTER TABLE Experience
-    ADD FOREIGN KEY (expert_id) REFERENCES Expert(username);
+-- Experience
+ALTER TABLE experiences
+    ADD FOREIGN KEY (expert_id) REFERENCES experts(username);
 
-# Expert
-ALTER TABLE Expert
-    ADD FOREIGN KEY (username) REFERENCES User(username),
-    ADD FOREIGN KEY (verified_by_admin_id) REFERENCES Admin(username);
+-- Expert
+ALTER TABLE experts
+    ADD FOREIGN KEY (username) REFERENCES users(username),
+    ADD FOREIGN KEY (verified_by_admin_id) REFERENCES admins(username);
 
-# Expert Application
-ALTER TABLE Expert_Application
-    ADD FOREIGN KEY (username) REFERENCES User(username);
+-- Expert Application
+ALTER TABLE expert_applications
+    ADD FOREIGN KEY (username) REFERENCES users(username);
 
-# Friend
-ALTER TABLE Friend
-    ADD FOREIGN KEY (user1_id) REFERENCES User(username),
-    ADD FOREIGN KEY (user2_id) REFERENCES User(username);
+-- Friend
+ALTER TABLE friends
+    ADD FOREIGN KEY (user1_id) REFERENCES users(username),
+    ADD FOREIGN KEY (user2_id) REFERENCES users(username);
 
-# Message
-ALTER TABLE Message
-    ADD FOREIGN KEY (chat_id) REFERENCES Chat(id),
-    ADD FOREIGN KEY (sender_id) REFERENCES User(username);
+-- Message
+ALTER TABLE messages
+    ADD FOREIGN KEY (chat_id) REFERENCES chats(id),
+    ADD FOREIGN KEY (sender_id) REFERENCES users(username);
 
-# Payment Method
-ALTER TABLE Payment_Method
-    ADD FOREIGN KEY (source_id) REFERENCES Transaction_Source(source_id),
-    ADD FOREIGN KEY (owner_id) REFERENCES User(username);
+-- Payment Method
+ALTER TABLE payment_methods
+    ADD FOREIGN KEY (source_id) REFERENCES transaction_sources(source_id),
+    ADD FOREIGN KEY (owner_id) REFERENCES users(username);
 
-# Review
-ALTER TABLE Review
-    ADD FOREIGN KEY (user_id) REFERENCES User(username),
-    ADD FOREIGN KEY (expert_id) REFERENCES Expert(username);
+-- Review
+ALTER TABLE reviews
+    ADD FOREIGN KEY (user_id) REFERENCES users(username),
+    ADD FOREIGN KEY (expert_id) REFERENCES experts(username);
 
-# Service
-ALTER TABLE Service
-    ADD FOREIGN KEY (expert_id) REFERENCES Expert(Username);
+-- Service
+ALTER TABLE services
+    ADD FOREIGN KEY (expert_id) REFERENCES experts(username);
 
-# Session
-ALTER TABLE Session
-    ADD FOREIGN KEY (meeting_provider_id) REFERENCES User(username),
-    ADD FOREIGN KEY (source_id) REFERENCES Transaction_Source(source_id),
-    ADD FOREIGN KEY (creator_id) REFERENCES User(username),
-    ADD FOREIGN KEY (expert_id) REFERENCES Expert(username),
-    ADD FOREIGN KEY (service_name) REFERENCES Service(name);
+-- Session
+ALTER TABLE sessions
+    ADD FOREIGN KEY (source_id) REFERENCES transaction_sources(source_id),
+    ADD FOREIGN KEY (creator_id) REFERENCES users(username),
+    ADD FOREIGN KEY (expert_id, service_name) REFERENCES services(expert_id, sname);
 
-# Session Participant
-ALTER TABLE Session_Participant
-    ADD FOREIGN KEY (session_id) REFERENCES Session(id),
-    ADD FOREIGN KEY (user_id) REFERENCES User(username);
+-- Session Participant
+ALTER TABLE session_participants
+    ADD FOREIGN KEY (session_id) REFERENCES sessions(id),
+    ADD FOREIGN KEY (user_id) REFERENCES users(username);
 
-# User
-ALTER TABLE User
-    ADD FOREIGN KEY (profile_pic_id) REFERENCES File(id);
+-- User
+ALTER TABLE users
+    ADD FOREIGN KEY (profile_pic_id) REFERENCES files(id);
