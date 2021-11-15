@@ -22,6 +22,8 @@ dependencies {
     implementation("com.arkivanov.decompose:decompose:0.4.0")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains:0.4.0")
     implementation("com.squareup.sqldelight:jdbc-driver:1.5.2")
+    implementation("com.zaxxer:HikariCP:5.0.0")
+    implementation("mysql:mysql-connector-java:8.0.25")
 }
 
 tasks.withType<KotlinCompile>() {

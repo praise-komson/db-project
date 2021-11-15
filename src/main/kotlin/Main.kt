@@ -7,9 +7,11 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.arkivanov.essenty.backpressed.BackPressedDispatcher
+import db.DatabaseHelper
 import ui.navigation.LocalBackPressedDispatcher
 
 fun main() = application {
+    DatabaseHelper
     Window(
         onCloseRequest = ::exitApplication,
         state = rememberWindowState(

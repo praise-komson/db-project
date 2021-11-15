@@ -1,0 +1,5 @@
+getSettings:
+SELECT * FROM settings;
+
+setVersion:
+UPDATE settings SET version = :version;

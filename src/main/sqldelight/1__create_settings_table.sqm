@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS settings (
+    id INT(4) NOT NULL,
+    version INT(4) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+INSERT IGNORE INTO settings VALUES (1, 2);
