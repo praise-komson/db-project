@@ -1,0 +1,25 @@
+getSessions:
+SELECT * FROM session;
+
+insertSession:
+INSERT INTO session (meeting_provider_id, fee, coin_on_hold, status, topic, duration, start_time, source_id, creator_id, expert_id, service_name)
+VALUES (
+    :meeting_provider_id,
+    :fee,
+    :coin_on_hold,
+    :status,
+    :topic,
+    :duration,
+    :start_time,
+    :source_id,
+    :creator_id,
+    :expert_id,
+    :service_name
+);
+
+updateSession:
+UPDATE session
+SET
+    coin_on_hold = :coin_on_hold,
+    status = :status
+WHERE id = :id;

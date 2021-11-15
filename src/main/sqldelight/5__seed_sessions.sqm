@@ -1,0 +1,14 @@
+INSERT INTO session (meeting_provider_id, fee, coin_on_hold, status, topic, duration, start_time, source_id, creator_id, expert_id, service_name)
+VALUES (
+    "test",
+    500,
+    500,
+    "PENDING",
+    "How to Take Care Your Cat and Corgi",
+    1,
+    NOW(),
+    1,
+    "Cat",
+    "John",
+    "How to Take Care Your Cat and Corgi"
+);

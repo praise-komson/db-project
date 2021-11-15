@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -16,6 +17,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import controller.SessionController
+import entity.Session
 import ui.components.NavBarLarge
 import ui.components.ScreenLayout
 import ui.theme.*
@@ -30,18 +33,18 @@ fun MyRequests() {
 //        depend on the pattern from MySessions
 //        Row () { }
         LazyColumn {
-            items(2) { index ->
+            itemsIndexed(SessionController.myRequests) { index, session ->
                 if (index > 0) {
                     Divider()
                 }
-                RequestRow()
+                RequestRow(session)
             }
         }
     }
 }
 
 @Composable
-fun RequestRow() {
+fun RequestRow(session: Session) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -59,12 +62,12 @@ fun RequestRow() {
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = "How to read indicators",
+                text = session.topic,
                 color = InkDarkest,
                 style = RegularTightMedium
             )
             Text(
-                text = "13 Dec 2021 14:00 - 15:00",
+                text = session.startTime,
                 color = InkLighter,
                 style = SmallTightRegular
             )
@@ -75,7 +78,10 @@ fun RequestRow() {
                 , verticalAlignment = Alignment.CenterVertically
             ) {
                 Button(
-                    onClick = { },
+                    onClick = {
+                        session.status = "ACCEPTED"
+                        session.save()
+                    },
                     shape = CircleShape
                 ) {
                     Text (
@@ -95,9 +101,8 @@ fun RequestRow() {
                         color = PrimaryDark,
                         style = RegularTightMedium,
                     )
-            }
+                }
             }
         }
     }
 }
-
