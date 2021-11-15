@@ -1,5 +1,5 @@
 getUsers:
-SELECT * FROM users;
+SELECT * FROM user;
 
 getExperts:
-SELECT * FROM experts;
+SELECT * FROM expert;

@@ -1,11 +1,11 @@
 -- Seed Data
 -- Admin
-INSERT INTO admins (username, password)
+INSERT INTO admin (username, password)
 VALUES ('Admin1','1234'),
        ('Admin2','1234');
 
 -- File
-INSERT INTO files (id,
+INSERT INTO file (id,
                   bucket,
                   url,
                   name,
@@ -36,7 +36,7 @@ VALUES
  'image/jpg');
 
 -- User
-INSERT INTO users (username,
+INSERT INTO user (username,
                   password,
                   display_name,
                   email,
@@ -92,12 +92,12 @@ VALUES
  1);
 
 -- Expert
-INSERT INTO experts (username, verified_by_admin_id)
+INSERT INTO expert (username, verified_by_admin_id)
 VALUES ('John','Admin1'),
        ('Rick', 'Admin2');
 
 -- Service
-INSERT INTO services (expert_id,
+INSERT INTO service (expert_id,
                      sname,
                      fee,
                      description)
@@ -115,7 +115,7 @@ VALUES
 
 -- Friend
 -- I make a Redundant for easily query.
-INSERT INTO friends (user1_id, user2_id)
+INSERT INTO friend (user1_id, user2_id)
 VALUES ('Rick', 'Corgi'),
        ('Rick', 'Cat'),
        ('Rick', 'John'),

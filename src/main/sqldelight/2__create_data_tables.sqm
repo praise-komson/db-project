@@ -1,32 +1,32 @@
 -- Admin
-CREATE TABLE admins(
+CREATE TABLE admin(
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     PRIMARY KEY (username)
 );
 
 -- Attachment
-CREATE TABLE attachments(
+CREATE TABLE attachment(
     file_id INT(4) NOT NULL,
     message_id INT(4) NOT NULL,
     PRIMARY KEY (file_id, message_id)
 );
 
 -- Chat
-CREATE TABLE chats(
+CREATE TABLE chat(
     id INT(4) NOT NULL UNIQUE,
     PRIMARY KEY (id)
 );
 
 -- Chat Member
-CREATE TABLE chat_members(
+CREATE TABLE chat_member(
     chat_id INT(4) NOT NULL,
     user_id VARCHAR(255) NOT NULL,
     PRIMARY KEY (chat_id, user_id)
 );
 
 -- Doji Coin Transaction
-CREATE TABLE doji_coin_transactions(
+CREATE TABLE doji_coin_transaction(
     id INT(4) NOT NULL UNIQUE,
     description TEXT(500) NOT NULL,
     amount BIGINT(8) NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE doji_coin_transactions(
 );
 
 -- Experience
-CREATE TABLE experiences(
+CREATE TABLE experience(
   expert_id VARCHAR(255) NOT NULL,
   field VARCHAR(255) NOT NULL,
   description TEXT(500) NOT NULL,
@@ -46,14 +46,14 @@ CREATE TABLE experiences(
 );
 
 -- Expert
-CREATE TABLE experts(
+CREATE TABLE expert(
     username VARCHAR(255) NOT NULL UNIQUE,
     verified_by_admin_id VARCHAR(255) NOT NULL,
     PRIMARY KEY (username)
 );
 
 -- Expert Application
-CREATE TABLE expert_applications(
+CREATE TABLE expert_application(
     username VARCHAR(255) NOT NULL,
     timestamp TIMESTAMP NOT NULL,
     description TEXT(500) NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE expert_applications(
 );
 
 -- File
-CREATE TABLE files(
+CREATE TABLE file(
     id INT(4) NOT NULL,
     bucket VARCHAR(255) NOT NULL,
     url VARCHAR(2048) NOT NULL,
@@ -72,14 +72,14 @@ CREATE TABLE files(
 );
 
 -- Friend
-CREATE TABLE friends(
+CREATE TABLE friend(
     user1_id VARCHAR(255) NOT NULL,
     user2_id VARCHAR(255) NOT NULL,
     PRIMARY KEY (user1_id, user2_id)
 );
 
 -- Message
-CREATE TABLE messages(
+CREATE TABLE message(
     id INT(4) NOT NULL UNIQUE,
     timestamp TIMESTAMP NOT NULL,
     text TEXT(500) NOT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE messages(
 );
 
 -- Payment Method
-CREATE TABLE payment_methods(
+CREATE TABLE payment_method(
     id VARCHAR(255) NOT NULL,
     provider VARCHAR(255) NOT NULL,
     display_name VARCHAR(255) NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE payment_methods(
 );
 
 -- Review
-CREATE TABLE reviews(
+CREATE TABLE review(
     user_id VARCHAR(255) NOT NULL,
     expert_id VARCHAR(255) NOT NULL,
     content TEXT(500) NOT NULL,
@@ -110,7 +110,7 @@ CREATE TABLE reviews(
 );
 
 -- Service
-CREATE TABLE services(
+CREATE TABLE service(
   expert_id VARCHAR(255) NOT NULL,
   sname VARCHAR(255) NOT NULL,
   fee BIGINT(8) NOT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE services(
 );
 
 -- Session
-CREATE TABLE sessions(
+CREATE TABLE session(
     id INT(4) NOT NULL UNIQUE,
     meeting_provider_id VARCHAR(255) NOT NULL,
     fee BIGINT(8) NOT NULL,
@@ -136,20 +136,20 @@ CREATE TABLE sessions(
 );
 
 -- Session Participant
-CREATE TABLE session_participants(
+CREATE TABLE session_participant(
   session_id INT(4) NOT NULL,
   user_id VARCHAR(255) NOT NULL,
   PRIMARY KEY (session_id, user_id)
 );
 
 -- Transaction Source
-CREATE TABLE transaction_sources(
+CREATE TABLE transaction_source(
     source_id INT(4) NOT NULL UNIQUE,
     PRIMARY KEY (source_id)
 );
 
 -- User
-CREATE TABLE users(
+CREATE TABLE user(
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     display_name VARCHAR(255) NOT NULL,
@@ -165,68 +165,68 @@ CREATE TABLE users(
 -- FOREIGN KEY
 
 -- Attachment
-ALTER TABLE attachments
-    ADD FOREIGN KEY (file_id) REFERENCES files(id),
-    ADD FOREIGN KEY (message_id) REFERENCES messages(id);
+ALTER TABLE attachment
+    ADD FOREIGN KEY (file_id) REFERENCES file(id),
+    ADD FOREIGN KEY (message_id) REFERENCES message(id);
 
 -- Chat Member
-ALTER TABLE chat_members
-    ADD FOREIGN KEY (chat_id) REFERENCES chats(id),
-    ADD FOREIGN KEY (user_id) REFERENCES users(username);
+ALTER TABLE chat_member
+    ADD FOREIGN KEY (chat_id) REFERENCES chat(id),
+    ADD FOREIGN KEY (user_id) REFERENCES user(username);
 
 -- Doji Coin Transaction
-ALTER TABLE doji_coin_transactions
-    ADD FOREIGN KEY (source_id) REFERENCES transaction_sources(source_id),
-    ADD FOREIGN KEY (user_id) REFERENCES users(username);
+ALTER TABLE doji_coin_transaction
+    ADD FOREIGN KEY (source_id) REFERENCES transaction_source(source_id),
+    ADD FOREIGN KEY (user_id) REFERENCES user(username);
 
 -- Experience
-ALTER TABLE experiences
-    ADD FOREIGN KEY (expert_id) REFERENCES experts(username);
+ALTER TABLE experience
+    ADD FOREIGN KEY (expert_id) REFERENCES expert(username);
 
 -- Expert
-ALTER TABLE experts
-    ADD FOREIGN KEY (username) REFERENCES users(username),
-    ADD FOREIGN KEY (verified_by_admin_id) REFERENCES admins(username);
+ALTER TABLE expert
+    ADD FOREIGN KEY (username) REFERENCES user(username),
+    ADD FOREIGN KEY (verified_by_admin_id) REFERENCES admin(username);
 
 -- Expert Application
-ALTER TABLE expert_applications
-    ADD FOREIGN KEY (username) REFERENCES users(username);
+ALTER TABLE expert_application
+    ADD FOREIGN KEY (username) REFERENCES user(username);
 
 -- Friend
-ALTER TABLE friends
-    ADD FOREIGN KEY (user1_id) REFERENCES users(username),
-    ADD FOREIGN KEY (user2_id) REFERENCES users(username);
+ALTER TABLE friend
+    ADD FOREIGN KEY (user1_id) REFERENCES user(username),
+    ADD FOREIGN KEY (user2_id) REFERENCES user(username);
 
 -- Message
-ALTER TABLE messages
-    ADD FOREIGN KEY (chat_id) REFERENCES chats(id),
-    ADD FOREIGN KEY (sender_id) REFERENCES users(username);
+ALTER TABLE message
+    ADD FOREIGN KEY (chat_id) REFERENCES chat(id),
+    ADD FOREIGN KEY (sender_id) REFERENCES user(username);
 
 -- Payment Method
-ALTER TABLE payment_methods
-    ADD FOREIGN KEY (source_id) REFERENCES transaction_sources(source_id),
-    ADD FOREIGN KEY (owner_id) REFERENCES users(username);
+ALTER TABLE payment_method
+    ADD FOREIGN KEY (source_id) REFERENCES transaction_source(source_id),
+    ADD FOREIGN KEY (owner_id) REFERENCES user(username);
 
 -- Review
-ALTER TABLE reviews
-    ADD FOREIGN KEY (user_id) REFERENCES users(username),
-    ADD FOREIGN KEY (expert_id) REFERENCES experts(username);
+ALTER TABLE review
+    ADD FOREIGN KEY (user_id) REFERENCES user(username),
+    ADD FOREIGN KEY (expert_id) REFERENCES expert(username);
 
 -- Service
-ALTER TABLE services
-    ADD FOREIGN KEY (expert_id) REFERENCES experts(username);
+ALTER TABLE service
+    ADD FOREIGN KEY (expert_id) REFERENCES expert(username);
 
 -- Session
-ALTER TABLE sessions
-    ADD FOREIGN KEY (source_id) REFERENCES transaction_sources(source_id),
-    ADD FOREIGN KEY (creator_id) REFERENCES users(username),
-    ADD FOREIGN KEY (expert_id, service_name) REFERENCES services(expert_id, sname);
+ALTER TABLE session
+    ADD FOREIGN KEY (source_id) REFERENCES transaction_source(source_id),
+    ADD FOREIGN KEY (creator_id) REFERENCES user(username),
+    ADD FOREIGN KEY (expert_id, service_name) REFERENCES service(expert_id, sname);
 
 -- Session Participant
-ALTER TABLE session_participants
-    ADD FOREIGN KEY (session_id) REFERENCES sessions(id),
-    ADD FOREIGN KEY (user_id) REFERENCES users(username);
+ALTER TABLE session_participant
+    ADD FOREIGN KEY (session_id) REFERENCES session(id),
+    ADD FOREIGN KEY (user_id) REFERENCES user(username);
 
 -- User
-ALTER TABLE users
-    ADD FOREIGN KEY (profile_pic_id) REFERENCES files(id);
+ALTER TABLE user
+    ADD FOREIGN KEY (profile_pic_id) REFERENCES file(id);
