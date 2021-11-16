@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -21,7 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import controller.SessionController
 import ui.components.NavBarLarge
 import ui.components.ScreenLayout
 import ui.theme.*
@@ -54,13 +57,13 @@ fun MySessions(
                 }
                 Box {
                     LazyColumn {
-                        items(15) { index ->
+                        itemsIndexed(SessionController.mySessions) { index, session ->
                             if (index > 0) {
                                 Divider()
                             }
                             SessionRow(onOpen = { showPopup.value = !showPopup.value
                                 sessionTitle.value = it
-                            })
+                            }, session)
                         }
                     }
                 }
@@ -100,7 +103,7 @@ fun MySessions(
 }
 
 @Composable
-fun SessionRow(onOpen: (title: String) -> Unit) {
+fun SessionRow(onOpen: (title: String) -> Unit, session: entity.Session) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -121,18 +124,87 @@ fun SessionRow(onOpen: (title: String) -> Unit) {
                 .weight(1f)
         ) {
             Text(
-                text = "How to read indicators",
+                text = session.topic,
                 color = InkDarkest,
                 style = RegularTightMedium
             )
             Text(
-                text = "13 Dec 2021 14:00 - 15:00",
+                text = session.startTime,
                 color = InkLighter,
                 style = SmallTightRegular
             )
+            var statusText = ""
+            var statusColor = Color.Red
+            var statusColorBg = Color.Red
+            var statusPath = ""
+            var statusMod = Modifier.padding(start = 3.dp, end = 10.dp).padding(top = 4.dp)
+            var statusTint = Color.Red
+            when (session.status){
+                "PENDING" -> {
+                    statusText = "Expert is pending"
+                    statusColor = SkyDark
+                    statusColorBg = SkyLightest
+                    statusPath = "icons/pending.svg"
+                    statusMod = Modifier.padding(start = 3.dp, end = 10.dp).padding(top = 1.dp)
+                    statusTint = SkyDark
+                }
+                "ACCEPTED" -> {
+                    statusText = "Expert has accepted"
+                    statusColor = GreenDarkest
+                    statusColorBg = GreenLightest
+                    statusPath = "icons/accepted.svg"
+                    statusMod = Modifier.padding(start = 3.dp, end = 10.dp).padding(top = 1.dp)
+                    statusTint = GreenDarkest
+                }
+                "ENDED" -> {
+                    statusText = "Ended"
+                    statusColor = PrimaryDark
+                    statusColorBg = PrimaryLightest
+                    statusPath = "icons/ended.svg"
+                    statusMod = Modifier.padding(start = 3.dp, end = 10.dp).padding(top = 1.dp)
+                    statusTint = PrimaryDark
+                }
+                "REVIEWED" -> {
+                    statusText = "Reviewed"
+                    statusColor = PrimaryDark
+                    statusColorBg = PrimaryLightest
+                    statusPath = "icons/ended.svg"
+                    statusMod = Modifier.padding(start = 3.dp, end = 10.dp).padding(top = 1.dp)
+                    statusTint = PrimaryDark
+                }
+                "CANCELED" -> {
+                    statusText = "Cancelled"
+                    statusColor = RedDarkest
+                    statusColorBg = RedLightest
+                    statusPath = "icons/cancel.svg"
+                    statusMod = Modifier.padding(start = 3.dp, end = 10.dp).padding(top = 4.dp)
+                    statusTint = RedDarkest
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .padding(top = 5.dp)
+                    .height(28.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(statusColorBg)
+                    .padding(horizontal = 10.dp, vertical = 5.dp)
+            ){
+                Row(
+//                    modifier = Modifier.align(Alignment.Center)
+                ) {
+                    Icon(painterResource(statusPath), "", modifier = statusMod,
+                        tint = statusTint
+                    )
+                    Text(
+                        text = statusText,
+                        style = SmallNoneRegular,
+                        color = statusColor
+                    )
+                }
+            }
         }
         Spacer(Modifier.width(12.dp))
-        IconButton( onClick = { onOpen("lksdjf") }) {
+        IconButton( onClick = { onOpen(session.topic) }) {
             Icon(Icons.Default.MoreVert, "")
         }
 
@@ -150,6 +222,8 @@ fun SessionPopUp(title: String ,onClose: () -> Unit){
     ){
         Text(
             text= title,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             style = Title3,
             color = InkDarkest,
             modifier = Modifier
@@ -159,6 +233,7 @@ fun SessionPopUp(title: String ,onClose: () -> Unit){
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .clip(RoundedCornerShape(5.dp))
                 .clickable {  }
                 .padding(all = 10.dp)
 
