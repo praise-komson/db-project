@@ -25,6 +25,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import controller.SessionController
+import entity.Session
+import repository.SessionRepository
 import ui.components.NavBarLarge
 import ui.components.ScreenLayout
 import ui.theme.*
@@ -34,7 +36,7 @@ fun MySessions(
     onNewSessionClick: () -> Unit
 ) {
     val showPopup = remember { mutableStateOf(false) }
-    val sessionTitle = remember { mutableStateOf("")}
+    var popUpSession = Session()
     ScreenLayout {
 
         Box()
@@ -62,7 +64,7 @@ fun MySessions(
                                 Divider()
                             }
                             SessionRow(onOpen = { showPopup.value = !showPopup.value
-                                sessionTitle.value = it
+                                popUpSession = it
                             }, session)
                         }
                     }
@@ -83,7 +85,7 @@ fun MySessions(
                             .clip(RoundedCornerShape(16.dp))
                             .background(Color.White)
                     ) {
-                        SessionPopUp(title = sessionTitle.value,onClose = { showPopup.value = !showPopup.value })
+                        SessionPopUp(session = popUpSession ,onClose = { showPopup.value = !showPopup.value })
                     }
                 }
                 Box(modifier = Modifier
@@ -103,7 +105,7 @@ fun MySessions(
 }
 
 @Composable
-fun SessionRow(onOpen: (title: String) -> Unit, session: entity.Session) {
+fun SessionRow(onOpen: (Session) -> Unit, session: Session) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -173,7 +175,7 @@ fun SessionRow(onOpen: (title: String) -> Unit, session: entity.Session) {
                     statusTint = PrimaryDark
                 }
                 "CANCELED" -> {
-                    statusText = "Cancelled"
+                    statusText = "Expert has declined"
                     statusColor = RedDarkest
                     statusColorBg = RedLightest
                     statusPath = "icons/cancel.svg"
@@ -204,7 +206,7 @@ fun SessionRow(onOpen: (title: String) -> Unit, session: entity.Session) {
             }
         }
         Spacer(Modifier.width(12.dp))
-        IconButton( onClick = { onOpen(session.topic) }) {
+        IconButton( onClick = { onOpen(session) }) {
             Icon(Icons.Default.MoreVert, "")
         }
 
@@ -212,7 +214,7 @@ fun SessionRow(onOpen: (title: String) -> Unit, session: entity.Session) {
 }
 
 @Composable
-fun SessionPopUp(title: String ,onClose: () -> Unit){
+fun SessionPopUp(session: Session ,onClose: () -> Unit){
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -221,7 +223,7 @@ fun SessionPopUp(title: String ,onClose: () -> Unit){
         verticalArrangement = Arrangement.Center,
     ){
         Text(
-            text= title,
+            text= session.topic,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = Title3,
@@ -234,7 +236,10 @@ fun SessionPopUp(title: String ,onClose: () -> Unit){
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(5.dp))
-                .clickable {  }
+                .clickable {
+                    SessionRepository.cancelSession(session)
+                    onClose()
+                }
                 .padding(all = 10.dp)
 
         ) {
@@ -242,7 +247,7 @@ fun SessionPopUp(title: String ,onClose: () -> Unit){
                 .padding(horizontal = 10.dp)
             )
             Text(
-                text = "Cancel session",
+                text = "Delete session",
                 style = SmallNormalRegular,
                 color = InkDarkest,
                 modifier = Modifier

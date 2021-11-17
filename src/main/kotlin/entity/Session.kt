@@ -32,10 +32,27 @@ data class Session(
         expertId = dbSession.expert_id,
         serviceName = dbSession.service_name
     )
+    constructor() : this(
+        id = 1,
+        meetingProviderId = "1",
+        fee = 1,
+        coinOnHold = 1,
+        status = "1",
+        topic = "1",
+        duration = 1,
+        startTime = "1",
+        sourceId = 1,
+        creatorId = "1",
+        expertId = "1",
+        serviceName = "1"
+    )
 
     val expert by lazy { UserRepository.experts.first { it.username == expertId } }
 
     fun save() {
         SessionRepository.updateSession(this)
+    }
+    fun cancel(){
+        SessionRepository.cancelSession(this)
     }
 }

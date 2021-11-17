@@ -28,4 +28,10 @@ object SessionRepository {
         )
         fetchSessions()
     }
+    fun cancelSession(session: Session){
+        sessionQueries.cancelSession(
+            id = session.id
+        )
+        fetchSessions()
+    }
 }

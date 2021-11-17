@@ -23,3 +23,7 @@ SET
     coin_on_hold = :coin_on_hold,
     status = :status
 WHERE id = :id;
+
+cancelSession:
+DELETE FROM session
+WHERE id = :id;
