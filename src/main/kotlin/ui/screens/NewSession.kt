@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import entity.Service
 import ui.components.*
 import ui.theme.InkBase
 import ui.theme.SmallNormalRegular
@@ -20,15 +21,14 @@ import kotlin.math.ceil
 
 @Composable
 fun NewSession(
-    expertUsername: String,
-    serviceName: String
+    service: Service
 ) {
     Column {
         ScreenLayout(modifier = Modifier.weight(1f)) {
             NavBarStandard(title = { Text("New session") })
-            NewSessionHeader()
+            NewSessionHeader(service)
             Text(
-                text = PlaceholderDescription,
+                text = service.description,
                 modifier = Modifier.padding(horizontal = 24.dp),
                 color = InkBase,
                 style = SmallNormalRegular

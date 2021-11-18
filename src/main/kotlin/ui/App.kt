@@ -42,15 +42,15 @@ fun App() {
                                 MyRequests()
                             is Configuration.BrowseServices ->
                                 BrowseServices(
-                                    onSelectService = { expertUsername, serviceName ->
+                                    onSelectService = { service ->
                                         val newConfig = Configuration.NewSession(
-                                            expertUsername, serviceName
+                                            service
                                         )
                                         router.push(newConfig)
                                     }
                                 )
                             is Configuration.NewSession ->
-                                NewSession(config.expertUsername, config.serviceName)
+                                NewSession(config.service)
                             is Configuration.SessionRequests ->
                                 SessionRequests()
                         }.let {}

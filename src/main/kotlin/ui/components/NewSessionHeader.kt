@@ -8,19 +8,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import entity.Service
 import ui.theme.LargeNormalBold
 import ui.theme.PrimaryDark
 import ui.theme.TinyNormalMedium
 import ui.theme.Title3
 
 @Composable
-fun NewSessionHeader() {
+fun NewSessionHeader(
+    service: Service
+) {
     Column(
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 16.dp)
     ) {
         Text(
-            text = "How to read indicators",
+            text = service.sname,
             style = Title3
         )
         Row(
@@ -28,10 +31,10 @@ fun NewSessionHeader() {
                 .padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ExpertChip(modifier = Modifier.weight(1f), "Rick Astley")
+            ExpertChip(modifier = Modifier.weight(1f), service.expertId)
             Row {
                 Text(
-                    text = "250",
+                    text = service.fee.toString(),
                     modifier = Modifier.alignByBaseline(),
                     color = PrimaryDark,
                     style = LargeNormalBold
