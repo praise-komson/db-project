@@ -40,7 +40,7 @@ fun NewSession(
             color = MaterialTheme.colors.surface,
             elevation = 8.dp
         ) {
-            PriceSummary()
+            PriceSummary(service.fee)
         }
     }
 }

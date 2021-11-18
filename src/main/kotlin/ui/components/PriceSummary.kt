@@ -14,7 +14,9 @@ import ui.theme.RegularNormalMedium
 import ui.theme.Title3
 
 @Composable
-fun PriceSummary() {
+fun PriceSummary(
+    price: Long
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -33,7 +35,7 @@ fun PriceSummary() {
                 style = LargeNoneMedium
             )
             Text(
-                text = "500 ",
+                text = "$price ",
                 color = PrimaryDark,
                 style = Title3
             )
