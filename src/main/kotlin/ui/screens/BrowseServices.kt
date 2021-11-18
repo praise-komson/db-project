@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -13,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import controller.ServiceController
+import entity.Service
 import ui.components.ExpertChip
 import ui.components.NavBarStandard
 import ui.components.ScreenLayout
@@ -27,13 +30,15 @@ fun BrowseServices(
             title = { Text("New session") }
         )
         LazyColumn {
-            items(10) { index ->
+            itemsIndexed(ServiceController.services) { index, service ->
                 if (index > 0) {
                     Divider()
                 }
                 ServiceRow(
                     modifier = Modifier
-                        .clickable { onSelectService("dummy_expert", "dummy_service") }
+                        .clickable { onSelectService("dummy_expert", "dummy_service") },
+                    service
+
                 )
             }
         }
@@ -42,7 +47,8 @@ fun BrowseServices(
 
 @Composable
 fun ServiceRow(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    service: Service
 ) {
     Column(
         modifier = modifier
@@ -55,19 +61,20 @@ fun ServiceRow(
                     .weight(1f)
             ) {
                 Text(
-                    text = "How to read indicators",
+                    text = service.sname,
                     style = LargeTightBold
                 )
                 ExpertChip(
                     modifier = Modifier
-                        .padding(vertical = 8.dp)
+                        .padding(vertical = 8.dp),
+                    expertName = service.expertId
                 )
             }
             Column(
                 horizontalAlignment = Alignment.End
             ) {
                 Text(
-                    text = "250",
+                    text = service.fee.toString(),
                     color = PrimaryDark,
                     style = LargeNormalBold
                 )
@@ -79,7 +86,7 @@ fun ServiceRow(
             }
         }
         Text(
-            text = PlaceholderDescription,
+            text = service.description,
             color = InkBase,
             style = SmallNormalRegular
         )

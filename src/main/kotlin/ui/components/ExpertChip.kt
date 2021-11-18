@@ -19,7 +19,8 @@ import ui.theme.SmallTightRegular
 
 @Composable
 fun ExpertChip(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    expertName: String
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -38,7 +39,7 @@ fun ExpertChip(
             style = SmallTightRegular
         )
         Text(
-            text = "Rick Astley",
+            text = expertName,
             color = InkLighter,
             style = SmallTightMedium
         )

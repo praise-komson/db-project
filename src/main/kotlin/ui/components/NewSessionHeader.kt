@@ -28,7 +28,7 @@ fun NewSessionHeader() {
                 .padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ExpertChip(modifier = Modifier.weight(1f))
+            ExpertChip(modifier = Modifier.weight(1f), "Rick Astley")
             Row {
                 Text(
                     text = "250",

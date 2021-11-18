@@ -1,0 +1,2 @@
+getServices:
+SELECT * FROM service;
