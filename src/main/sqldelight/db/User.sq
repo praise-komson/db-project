@@ -20,4 +20,4 @@ SELECT
     online_status,
     register_timestamp,
     profile_pic_id
-FROM expert e NATURAL JOIN user u;
+FROM expert e INNER JOIN user u ON e.username = u.username;
