@@ -1,5 +1,23 @@
 getUsers:
-SELECT * FROM user;
+SELECT
+    username,
+    password,
+    display_name,
+    email,
+    coin_balance,
+    online_status,
+    register_timestamp,
+    profile_pic_id
+FROM user;
 
 getExperts:
-SELECT * FROM expert;
+SELECT
+    u.username,
+    password,
+    display_name,
+    email,
+    coin_balance,
+    online_status,
+    register_timestamp,
+    profile_pic_id
+FROM expert e NATURAL JOIN user u;
