@@ -1,32 +1,22 @@
 package repository
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import controller.UserController
 import db.DatabaseHelper
 import entity.Session
+import repository.utils.makeQueryState
 
 object SessionRepository {
 
     private val sessionQueries = DatabaseHelper.database.sessionQueries
-    var sessions by mutableStateOf(emptyList<Session>())
-        private set
-    var mySessions by mutableStateOf(emptyList<Session>())
-        private set
 
-    init {
-        fetchSessions()
-        fetchMySession()
-    }
+    private val sessionsState = makeQueryState { sessionQueries.getSessions().executeAsList().map(::Session) }
+    val sessions by sessionsState
 
-    fun fetchSessions() {
-        sessions = sessionQueries.getSessions().executeAsList().map(::Session)
+    private val mySessionsState = makeQueryState {
+        UserController.username?.let { sessionQueries.getMySession(user_id = it).executeAsList().map(::Session) } ?: emptyList()
     }
-
-    fun fetchMySession(){
-        mySessions = UserController.username?.let { sessionQueries.getMySession(user_id = it).executeAsList().map(::Session) }!!
-    }
+    val mySessions by mySessionsState
 
     fun updateSession(session: Session) {
         sessionQueries.updateSession(
@@ -34,12 +24,13 @@ object SessionRepository {
             coin_on_hold = session.coinOnHold,
             status = session.status
         )
-        fetchSessions()
+        sessionsState.refetch()
     }
-    fun cancelSession(session: Session){
+
+    fun cancelSession(session: Session) {
         sessionQueries.cancelSession(
             id = session.id
         )
-        fetchMySession()
+        mySessionsState.refetch()
     }
 }
