@@ -12,14 +12,11 @@ object SessionRepository {
     private val sessionQueries = DatabaseHelper.database.sessionQueries
     var sessions by mutableStateOf(emptyList<Session>())
         private set
-
-    init {
-        fetchSessions()
-    }
     var mySessions by mutableStateOf(emptyList<Session>())
         private set
 
     init {
+        fetchSessions()
         fetchMySession()
     }
 
