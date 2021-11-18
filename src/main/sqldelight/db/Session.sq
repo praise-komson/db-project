@@ -1,6 +1,12 @@
 getSessions:
 SELECT * FROM session;
 
+getMySession:
+SELECT id, meeting_provider_id,fee,coin_on_hold,status,topic,duration,start_time,source_id,creator_id,expert_id,service_name
+FROM `session` s INNER JOIN session_participant p ON s.id = p.session_id
+WHERE user_id = :user_id;
+
+
 insertSession:
 INSERT INTO session (meeting_provider_id, fee, coin_on_hold, status, topic, duration, start_time, source_id, creator_id, expert_id, service_name)
 VALUES (

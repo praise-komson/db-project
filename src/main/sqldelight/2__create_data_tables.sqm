@@ -218,7 +218,7 @@ ALTER TABLE session
 
 -- Session Participant
 ALTER TABLE session_participant
-    ADD FOREIGN KEY (session_id) REFERENCES session(id),
+    ADD FOREIGN KEY (session_id) REFERENCES session(id) ON DELETE CASCADE,
     ADD FOREIGN KEY (user_id) REFERENCES user(username);
 
 -- User

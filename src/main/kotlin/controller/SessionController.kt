@@ -7,7 +7,9 @@ import repository.SessionRepository
 object SessionController {
 
     val mySessions by derivedStateOf {
-        SessionRepository.sessions.filter { it.creatorId == UserController.username }
+//        SessionRepository.sessions.filter { it.creatorId == UserController.username }
+//        SessionRepository.fetchMySession("John")
+        SessionRepository.mySessions
     }
     val myRequests by derivedStateOf {
         SessionRepository.sessions
