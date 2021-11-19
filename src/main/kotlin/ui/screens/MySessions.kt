@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import controller.SessionController
 import entity.Session
 import repository.SessionRepository
+import ui.components.CustomButton
 import ui.components.NavBarLarge
 import ui.components.ScreenLayout
 import ui.theme.*
@@ -50,9 +51,8 @@ fun MySessions(
                     NavBarLarge(
                         title = { Text("My Sessions") },
                         actionButtons = {
-                            Button(
-                                onClick = onNewSessionClick,
-                                shape = CircleShape
+                            CustomButton(
+                                onClick = onNewSessionClick
                             ) {
                                 Text("New")
                                 Icon(Icons.Default.Add, "")
@@ -278,21 +278,17 @@ fun SessionPopUp(session: Session ,onClose: () -> Unit){
             modifier = Modifier
                 .padding(bottom = 10.dp)
         )
-        Button(
+        TextButton(
             onClick = onClose ,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .fillMaxWidth()
-            ,
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-            elevation = ButtonDefaults.elevation(0.dp)
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
         ){
             Text(
                 "Cancel",
                 color = PrimaryDark
-                )
+            )
         }
     }
-
 }
-

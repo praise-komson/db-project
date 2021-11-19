@@ -3,7 +3,6 @@ package ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -19,10 +18,7 @@ import entity.Service
 import entity.Session
 import repository.SessionRepository
 import repository.TransactionSourceRepository
-import ui.components.CustomTextField
-import ui.components.NavBarStandard
-import ui.components.NewSessionHeader
-import ui.components.ScreenLayout
+import ui.components.*
 import ui.theme.*
 import kotlin.math.ceil
 
@@ -200,11 +196,10 @@ fun PriceSummary(
                 style = RegularNormalMedium
             )
         }
-        Button(
+        CustomButton(
             onClick = onClickSchedule,
             modifier = Modifier
-                .fillMaxWidth(),
-            shape = CircleShape
+                .fillMaxWidth()
         ) {
             Text("Schedule")
         }

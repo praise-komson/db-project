@@ -6,7 +6,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -18,6 +17,7 @@ import controller.UserController
 import entity.Chat
 import entity.Message
 import repository.utils.makeQueryState
+import ui.components.CustomButton
 import ui.components.CustomTextField
 import ui.components.NavBarStandard
 import ui.components.ScreenLayout
@@ -63,13 +63,12 @@ fun ChatRoom(chat_id: Number) {
                 modifier = Modifier.weight(1f),
             )
             Spacer(Modifier.width(8.dp))
-            Button(
+            CustomButton(
                 onClick = {
                     ChatController.sendMessage(chat.id, value)
                     setValue("")
                     chatState.refetch()
-                },
-                shape = CircleShape
+                }
             ) {
                 Text("Send")
             }
