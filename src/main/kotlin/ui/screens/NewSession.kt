@@ -63,7 +63,8 @@ fun NewSession(
             color = MaterialTheme.colors.surface,
             elevation = 8.dp
         ) {
-            PriceSummary(service.fee * Integer.parseInt(duration.ifEmpty { "0" })) {
+            val totalPrice = service.fee * Integer.parseInt(duration.ifEmpty { "0" })
+            PriceSummary(totalPrice) {
                 val durationInt = Integer.parseInt(duration.ifEmpty { "0" })
                 if (durationInt <= 0) {
                     return@PriceSummary
@@ -93,7 +94,7 @@ fun NewSession(
                     session = SessionRepository.insertSession(session)
                     // TODO: add friend?
                     SessionRepository.insertSessionParticipant(session.id, username)
-                    // TODO: call stored procedure to transfer coin
+                    DatabaseHelper.conductCoinTransaction(session.id, username, -totalPrice, "pay to schedule session")
                 }
             }
         }

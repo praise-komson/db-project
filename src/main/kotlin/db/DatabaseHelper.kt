@@ -6,6 +6,7 @@ import com.squareup.sqldelight.sqlite.driver.JdbcDriver
 import com.squareup.sqldelight.sqlite.driver.asJdbcDriver
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import repository.UserRepository
 import org.litote.kmongo.*
 
 object DatabaseHelper {
@@ -51,8 +52,9 @@ object DatabaseHelper {
     }
 
     private fun createStoredProcedure() {
-        driver.execute(0,"DROP PROCEDURE IF EXISTS ConductCoinTransaction;",0)
-        driver.execute(1,
+        driver.execute(0, "DROP PROCEDURE IF EXISTS ConductCoinTransaction;", 0)
+        driver.execute(
+            1,
             """
 CREATE PROCEDURE ConductCoinTransaction (
     IN SessionId INT(4),
@@ -99,15 +101,17 @@ END;
         )
     }
 
-    fun conductCoinTransaction(session_id: Int, username: String, amount: Int, description: String) {
-        driver.execute(2,
+    fun conductCoinTransaction(session_id: Int, username: String, amount: Long, description: String) {
+        driver.execute(
+            2,
             "CALL ConductCoinTransaction(?,?,?,?)",
             4
         ) {
-            bindLong(1,session_id.toLong())
-            bindString(2,username)
-            bindLong(3,amount.toLong())
-            bindString(4,description)
+            bindLong(1, session_id.toLong())
+            bindString(2, username)
+            bindLong(3, amount)
+            bindString(4, description)
         }
+        UserRepository.refetchUsers()
     }
 }

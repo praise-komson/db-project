@@ -56,13 +56,12 @@ object SessionRepository {
     }
 
     fun cancelSession(session: Session) {
-        val refundAmount = sessionQueries.getCoinOnHold(id = session.id).executeAsOne().toInt()
+        val refundAmount = sessionQueries.getCoinOnHold(id = session.id).executeAsOne()
         DatabaseHelper.conductCoinTransaction(session.id, session.creatorId, refundAmount, "refund")
         sessionQueries.cancelSession(
             id = session.id
         )
         sessionsState.refetch()
         mySessionsState.refetch()
-        UserRepository.refetchUsers()
     }
 }
