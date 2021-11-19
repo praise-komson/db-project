@@ -1,13 +1,13 @@
 package db
 
-import com.squareup.sqldelight.EnumColumnAdapter
 import com.mongodb.client.MongoDatabase
+import com.squareup.sqldelight.EnumColumnAdapter
 import com.squareup.sqldelight.sqlite.driver.JdbcDriver
 import com.squareup.sqldelight.sqlite.driver.asJdbcDriver
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import org.litote.kmongo.KMongo
 import repository.UserRepository
-import org.litote.kmongo.*
 
 object DatabaseHelper {
 
@@ -102,6 +102,7 @@ END;
     }
 
     fun conductCoinTransaction(session_id: Int, username: String, amount: Long, description: String) {
+        val session = database.sessionQueries.getSessionById(session_id).executeAsOne()
         driver.execute(
             2,
             "CALL ConductCoinTransaction(?,?,?,?)",
@@ -112,6 +113,7 @@ END;
             bindLong(3, amount)
             bindString(4, description)
         }
+        database.sessionQueries.updateSession(session.coin_on_hold - amount, session.status, session.id)
         UserRepository.refetchUsers()
     }
 }
