@@ -1,6 +1,7 @@
 package ui.navigation
 
 import com.arkivanov.essenty.parcelable.Parcelable
+import entity.Chat
 import entity.Service
 
 sealed class Configuration : Parcelable {
@@ -11,5 +12,6 @@ sealed class Configuration : Parcelable {
 
     object SessionRequests : Configuration()
     object MyRequests : Configuration()
-
+    object MyChats : Configuration()
+    data class ChatRoom(val chat: Chat) : Configuration()
 }

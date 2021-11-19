@@ -17,3 +17,5 @@ services:
     restart: unless-stopped
     ports:
       - "27018:27017"
+    volumes:
+      - "./volume/mongo:/data/db"

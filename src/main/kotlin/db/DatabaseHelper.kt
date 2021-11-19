@@ -1,15 +1,18 @@
 package db
 
 import com.squareup.sqldelight.EnumColumnAdapter
+import com.mongodb.client.MongoDatabase
 import com.squareup.sqldelight.sqlite.driver.JdbcDriver
 import com.squareup.sqldelight.sqlite.driver.asJdbcDriver
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import org.litote.kmongo.*
 
 object DatabaseHelper {
 
     val driver: JdbcDriver
     val database: Database
+    val mongoDb: MongoDatabase
 
     init {
         val config = HikariConfig()
@@ -30,6 +33,8 @@ object DatabaseHelper {
         )
         migrate()
         createStoredProcedure()
+
+        mongoDb = KMongo.createClient("mongodb://localhost:27018").getDatabase("doji")
     }
 
     private fun migrate() {

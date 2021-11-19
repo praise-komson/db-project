@@ -24,6 +24,7 @@ dependencies {
     implementation("com.squareup.sqldelight:jdbc-driver:1.5.2")
     implementation("com.zaxxer:HikariCP:5.0.0")
     implementation("mysql:mysql-connector-java:8.0.25")
+    implementation("org.litote.kmongo:kmongo:4.3.0")
 }
 
 tasks.withType<KotlinCompile>() {

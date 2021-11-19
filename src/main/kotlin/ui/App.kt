@@ -34,7 +34,9 @@ fun App() {
                     Children(routerState = router.state) { screen ->
                         when (val config = screen.configuration) {
                             is Configuration.Profile ->
-                                Profile()
+                                Profile(
+                                    onRouteChat = { router.push(Configuration.MyChats)}
+                                )
                             is Configuration.MySessions ->
                                 MySessions(
                                     onNewSessionClick = { router.push(Configuration.BrowseServices) }
@@ -56,6 +58,10 @@ fun App() {
                                 })
                             is Configuration.SessionRequests ->
                                 SessionRequests()
+                            is Configuration.MyChats ->
+                                MyChats(router)
+                            is Configuration.ChatRoom ->
+                                ChatRoom(config.chat.id)
                         }.let {}
                     }
                 }
