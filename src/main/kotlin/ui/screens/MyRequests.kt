@@ -1,5 +1,6 @@
 package ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import controller.SessionController
 import entity.Session
@@ -23,6 +25,7 @@ import ui.theme.InkDarkest
 import ui.theme.InkLighter
 import ui.theme.RegularTightMedium
 import ui.theme.SmallTightRegular
+import ui.util.imagePainter
 
 @Composable
 fun MyRequests() {
@@ -51,11 +54,14 @@ fun RequestRow(session: Session) {
             .padding(vertical = 21.dp)
             .padding(start = 24.dp, end = 12.dp),
     ) {
-        Box(
+        Image(
+            painter = imagePainter(session.expert.profile_pic_url),
+            contentDescription = "",
             modifier = Modifier
                 .size(40.dp)
                 .clip(CircleShape)
-                .background(Color.LightGray)
+                .background(Color.LightGray),
+            contentScale = ContentScale.Crop
         )
         Spacer(Modifier.width(12.dp))
         Column(
@@ -71,11 +77,10 @@ fun RequestRow(session: Session) {
                 color = InkLighter,
                 style = SmallTightRegular
             )
-            Row (
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 10.dp)
-                , verticalAlignment = Alignment.CenterVertically
+                    .padding(vertical = 10.dp), verticalAlignment = Alignment.CenterVertically
             ) {
                 CustomButton(
                     onClick = {
@@ -83,7 +88,7 @@ fun RequestRow(session: Session) {
                         session.save()
                     }
                 ) {
-                    Text (text = "Accept")
+                    Text(text = "Accept")
                 }
                 Spacer(Modifier.width(12.dp))
                 CustomButton(
@@ -93,7 +98,7 @@ fun RequestRow(session: Session) {
                     },
                     colors = buttonColorsSecondary()
                 ) {
-                    Text (text = "Decline")
+                    Text(text = "Decline")
                 }
             }
         }
