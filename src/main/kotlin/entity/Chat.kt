@@ -1,0 +1,4 @@
+package entity
+
+class Chat {
+}
