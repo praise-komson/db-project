@@ -11,6 +11,7 @@ import controller.UserController
 import ui.components.NavBarLarge
 import ui.components.ScreenLayout
 import ui.theme.LargeNoneMedium
+import ui.theme.RegularNoneRegular
 
 @Composable
 fun Profile() {
@@ -18,8 +19,12 @@ fun Profile() {
         NavBarLarge(title = { Text(text = "Profile") })
         Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp)) {
             Text(
-                text = UserController.user?.display_name ?: "",
+                text = UserController.user?.display_name?: "",
                 style = LargeNoneMedium
+            )
+            Text(
+                text = UserController.user?.coin_balance.toString() + " coins",
+                style = RegularNoneRegular
             )
             Button(onClick = { UserController.username = null }) {
                 Text(text = "Logout")
