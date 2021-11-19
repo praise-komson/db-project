@@ -1,0 +1,4 @@
+import entity.Session;
+
+ALTER TABLE session
+    MODIFY status ENUM('PENDING', 'ACCEPTED', 'DECLINED', 'ENDED', 'REVIEWED', 'CANCELED') AS Session.Status NOT NULL;
