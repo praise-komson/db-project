@@ -31,7 +31,11 @@ fun NewSessionHeader(
                 .padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ExpertChip(modifier = Modifier.weight(1f), service.expertId)
+            ExpertChip(
+                modifier = Modifier.weight(1f),
+                service.expertId,
+                service.expert.profile_pic_url
+            )
             Row {
                 Text(
                     text = service.fee.toString(),

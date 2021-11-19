@@ -1,5 +1,6 @@
 package entity
 
+import repository.UserRepository
 import db.Service as DbService
 
 data class Service(
@@ -21,4 +22,6 @@ data class Service(
         fee = dbService.fee,
         description = dbService.description
     )
+
+    val expert by lazy { UserRepository.experts.first { it.username == expertId } }
 }

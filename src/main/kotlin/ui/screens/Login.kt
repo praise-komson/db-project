@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import controller.UserController
-import db.User
+import db.GetUsers
 import repository.UserRepository
 import ui.components.NavBarLarge
 import ui.components.ScreenLayout
@@ -41,7 +41,7 @@ fun Login() {
 }
 
 @Composable
-fun UserRow(user: User) {
+fun UserRow(user: GetUsers) {
     val isExpert = UserRepository.experts.any { it.username == user.username }
     Row(
         modifier = Modifier

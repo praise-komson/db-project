@@ -7,8 +7,9 @@ SELECT
     coin_balance,
     online_status,
     register_timestamp,
-    profile_pic_id
-FROM user;
+    file.url AS profile_pic_url
+FROM user
+INNER JOIN file ON file.id = profile_pic_id;
 
 getExperts:
 SELECT
@@ -19,5 +20,7 @@ SELECT
     coin_balance,
     online_status,
     register_timestamp,
-    profile_pic_id
-FROM expert e INNER JOIN user u ON e.username = u.username;
+    file.url AS profile_pic_url
+FROM expert e
+INNER JOIN user u ON e.username = u.username
+INNER JOIN file ON file.id = u.profile_pic_id;

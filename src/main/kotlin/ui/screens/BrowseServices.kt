@@ -67,7 +67,8 @@ fun ServiceRow(
                 ExpertChip(
                     modifier = Modifier
                         .padding(vertical = 8.dp),
-                    expertName = service.expertId
+                    expertName = service.expertId,
+                    service.expert.profile_pic_url
                 )
             }
             Column(

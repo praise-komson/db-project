@@ -1,6 +1,7 @@
 package ui.screens
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -21,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -30,6 +32,7 @@ import repository.SessionRepository
 import ui.components.NavBarLarge
 import ui.components.ScreenLayout
 import ui.theme.*
+import ui.util.imagePainter
 
 @Composable
 fun MySessions(
@@ -114,11 +117,13 @@ fun SessionRow(onOpen: (Session) -> Unit, session: Session) {
             .padding(start = 24.dp, end = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
+        Image(
+            painter = imagePainter(session.expert.profile_pic_url),
+            contentDescription = "",
             modifier = Modifier
                 .size(40.dp)
-                .clip(CircleShape)
-                .background(Color.LightGray)
+                .clip(CircleShape),
+            contentScale = ContentScale.Crop
         )
         Spacer(Modifier.width(12.dp))
         Column(
