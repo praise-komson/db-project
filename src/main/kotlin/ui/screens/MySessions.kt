@@ -1,6 +1,6 @@
 package ui.screens
 
-import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,12 +42,9 @@ fun MySessions(
     val showPopup = remember { mutableStateOf(false) }
     var popUpSession = Session()
     ScreenLayout {
-
-        Box()
-        {
-            Column() {
-                Box(
-                ) {
+        Box {
+            Column {
+                Box {
                     NavBarLarge(
                         title = { Text("My Sessions") },
                         actionButtons = {
@@ -74,31 +71,40 @@ fun MySessions(
                 }
             }
             val bgColor by animateColorAsState(if (showPopup.value) InkDarkest.copy(alpha = 0.7f) else InkDarkest.copy(alpha = 0.0f))
-            if (showPopup.value) {
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                    .background(bgColor)
+            Column {
+                AnimatedVisibility(
+                    visible = showPopup.value,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    Spacer(modifier = Modifier
+                        .fillMaxSize()
+                        .background(bgColor)
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ) {
+                            showPopup.value = false
+                        }
+                    )
+                }
+            }
+            Column {
+                Spacer(modifier = Modifier.weight(1f))
+                AnimatedVisibility(
+                    visible = showPopup.value,
+                    enter = slideInVertically { it },
+                    exit = slideOutVertically { it }
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .align(Alignment.BottomEnd)
                             .clip(RoundedCornerShape(16.dp, 16.dp, 0.dp, 0.dp))
                             .background(SkyWhite)
                     ) {
                         SessionPopUp(session = popUpSession, onClose = { showPopup.value = !showPopup.value })
                     }
                 }
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(500.dp)
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) {
-                        showPopup.value = !showPopup.value
-                    }
-                )
             }
         }
 
