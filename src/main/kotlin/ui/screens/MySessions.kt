@@ -73,22 +73,20 @@ fun MySessions(
                     }
                 }
             }
-            val bgColor by animateColorAsState(if (showPopup.value) Color.Black.copy(alpha = 0.8f) else Color.Black.copy(alpha = 0.0f))
+            val bgColor by animateColorAsState(if (showPopup.value) InkDarkest.copy(alpha = 0.7f) else InkDarkest.copy(alpha = 0.0f))
             if (showPopup.value) {
                 Box(modifier = Modifier
                     .fillMaxSize()
                     .background(bgColor)
-                )
-                {
+                ) {
                     Box(
                         modifier = Modifier
-                            .height(200.dp)
                             .fillMaxWidth()
                             .align(Alignment.BottomEnd)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(Color.White)
+                            .clip(RoundedCornerShape(16.dp, 16.dp, 0.dp, 0.dp))
+                            .background(SkyWhite)
                     ) {
-                        SessionPopUp(session = popUpSession ,onClose = { showPopup.value = !showPopup.value })
+                        SessionPopUp(session = popUpSession, onClose = { showPopup.value = !showPopup.value })
                     }
                 }
                 Box(modifier = Modifier
@@ -231,10 +229,9 @@ fun SessionPopUp(session: Session ,onClose: () -> Unit){
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(all = 16.dp)
-        ,
+            .padding(top = 24.dp),
         verticalArrangement = Arrangement.Center,
-    ){
+    ) {
         Text(
             text= session.topic,
             maxLines = 1,
@@ -242,49 +239,42 @@ fun SessionPopUp(session: Session ,onClose: () -> Unit){
             style = Title3,
             color = InkDarkest,
             modifier = Modifier
+                .padding(horizontal = 24.dp)
                 .padding(bottom = 16.dp)
-
         )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(5.dp))
                 .clickable {
                     SessionRepository.cancelSession(session)
                     onClose()
                 }
-                .padding(all = 10.dp)
-
+                .height(56.dp)
+                .padding(horizontal = 24.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(painterResource("icons/delete.svg"), "",modifier = Modifier
-                .padding(horizontal = 10.dp)
+                .padding(end = 8.dp)
             )
             Text(
                 text = "Delete session",
                 style = SmallNormalRegular,
-                color = InkDarkest,
-                modifier = Modifier
-                    .padding(top = 3.dp)
-//                    .padding(bottom = 10.dp)
+                color = InkDarkest
             )
         }
-        Column(
-            modifier = Modifier
-                .padding(all = 15.dp)
-        ){
-
-        }
         Divider(
+            color = SkyLighter,
             modifier = Modifier
-                .padding(bottom = 10.dp)
+                .padding(top = 24.dp)
         )
         TextButton(
-            onClick = onClose ,
+            onClick = onClose,
             modifier = Modifier
+                .padding(horizontal = 24.dp, vertical = 16.dp)
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
-        ){
+        ) {
             Text(
                 "Cancel",
                 color = PrimaryDark
