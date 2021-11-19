@@ -141,8 +141,8 @@ fun SessionRow(onOpen: (Session) -> Unit, session: Session) {
             var statusPath = ""
             var statusMod = Modifier.padding(start = 3.dp, end = 10.dp).padding(top = 4.dp)
             var statusTint = Color.Red
-            when (session.status){
-                "PENDING" -> {
+            when (session.status) {
+                Session.Status.PENDING -> {
                     statusText = "Expert is pending"
                     statusColor = SkyDark
                     statusColorBg = SkyLightest
@@ -150,7 +150,7 @@ fun SessionRow(onOpen: (Session) -> Unit, session: Session) {
                     statusMod = Modifier.padding(start = 3.dp, end = 10.dp).padding(top = 1.dp)
                     statusTint = SkyDark
                 }
-                "ACCEPTED" -> {
+                Session.Status.ACCEPTED -> {
                     statusText = "Expert has accepted"
                     statusColor = GreenDarkest
                     statusColorBg = GreenLightest
@@ -158,7 +158,7 @@ fun SessionRow(onOpen: (Session) -> Unit, session: Session) {
                     statusMod = Modifier.padding(start = 3.dp, end = 10.dp).padding(top = 1.dp)
                     statusTint = GreenDarkest
                 }
-                "ENDED" -> {
+                Session.Status.ENDED -> {
                     statusText = "Ended"
                     statusColor = PrimaryDark
                     statusColorBg = PrimaryLightest
@@ -166,7 +166,7 @@ fun SessionRow(onOpen: (Session) -> Unit, session: Session) {
                     statusMod = Modifier.padding(start = 3.dp, end = 10.dp).padding(top = 1.dp)
                     statusTint = PrimaryDark
                 }
-                "REVIEWED" -> {
+                Session.Status.REVIEWED -> {
                     statusText = "Reviewed"
                     statusColor = PrimaryDark
                     statusColorBg = PrimaryLightest
@@ -174,8 +174,16 @@ fun SessionRow(onOpen: (Session) -> Unit, session: Session) {
                     statusMod = Modifier.padding(start = 3.dp, end = 10.dp).padding(top = 1.dp)
                     statusTint = PrimaryDark
                 }
-                "CANCELED" -> {
+                Session.Status.DECLINED -> {
                     statusText = "Expert has declined"
+                    statusColor = RedDarkest
+                    statusColorBg = RedLightest
+                    statusPath = "icons/cancel.svg"
+                    statusMod = Modifier.padding(start = 3.dp, end = 10.dp).padding(top = 4.dp)
+                    statusTint = RedDarkest
+                }
+                Session.Status.CANCELED -> {
+                    statusText = "Canceled"
                     statusColor = RedDarkest
                     statusColorBg = RedLightest
                     statusPath = "icons/cancel.svg"

@@ -2,6 +2,7 @@ package controller
 
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import entity.Session
 import repository.SessionRepository
 
 object SessionController {
@@ -14,6 +15,6 @@ object SessionController {
     val myRequests by derivedStateOf {
         SessionRepository.sessions
             .filter { it.expertId == UserController.username }
-            .filter { it.status == "PENDING" }
+            .filter { it.status == Session.Status.PENDING }
     }
 }

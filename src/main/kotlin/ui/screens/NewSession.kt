@@ -81,7 +81,7 @@ fun NewSession(
                         meetingProviderId = "1",
                         fee = service.fee,
                         coinOnHold = 0,
-                        status = "PENDING",
+                        status = Session.Status.PENDING,
                         topic = service.sname,
                         duration = durationInt,
                         startTime = String.format("%s %s:00", startDate, startTime),

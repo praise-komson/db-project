@@ -9,7 +9,7 @@ data class Session(
     val meetingProviderId: String,
     val fee: Long,
     var coinOnHold: Long,
-    var status: String,
+    var status: Status,
     val topic: String,
     val duration: Int,
     val startTime: String,
@@ -38,7 +38,7 @@ data class Session(
         meetingProviderId = "1",
         fee = 1,
         coinOnHold = 1,
-        status = "1",
+        status = Status.PENDING,
         topic = "1",
         duration = 1,
         startTime = "1",
@@ -56,5 +56,9 @@ data class Session(
 
     fun cancel() {
         SessionRepository.cancelSession(this)
+    }
+
+    enum class Status {
+        PENDING, ACCEPTED, DECLINED, ENDED, REVIEWED, CANCELED
     }
 }

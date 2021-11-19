@@ -79,7 +79,7 @@ fun RequestRow(session: Session) {
             ) {
                 Button(
                     onClick = {
-                        session.status = "ACCEPTED"
+                        session.status = Session.Status.ACCEPTED
                         session.save()
                     },
                     shape = CircleShape
@@ -93,7 +93,7 @@ fun RequestRow(session: Session) {
                 Spacer(Modifier.width(12.dp))
                 Button(
                     onClick = {
-                        session.status = "DECLINED"
+                        session.status = Session.Status.DECLINED
                         session.save()
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray),

@@ -1,5 +1,6 @@
 package db
 
+import com.squareup.sqldelight.EnumColumnAdapter
 import com.squareup.sqldelight.sqlite.driver.JdbcDriver
 import com.squareup.sqldelight.sqlite.driver.asJdbcDriver
 import com.zaxxer.hikari.HikariConfig
@@ -21,7 +22,12 @@ object DatabaseHelper {
 
         val ds = HikariDataSource(config)
         driver = ds.asJdbcDriver()
-        database = Database(driver)
+        database = Database(
+            driver,
+            sessionAdapter = Session.Adapter(
+                statusAdapter = EnumColumnAdapter()
+            )
+        )
         migrate()
         createStoredProcedure()
     }
