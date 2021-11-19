@@ -92,7 +92,10 @@ fun RequestRow(session: Session) {
                 }
                 Spacer(Modifier.width(12.dp))
                 Button(
-                    onClick = { },
+                    onClick = {
+                        session.status = "DECLINED"
+                        session.save()
+                    },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray),
                     shape = CircleShape,
                 ) {
