@@ -63,5 +63,6 @@ object SessionRepository {
         )
         sessionsState.refetch()
         mySessionsState.refetch()
+        UserRepository.refetchUsers()
     }
 }
