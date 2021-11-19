@@ -55,6 +55,8 @@ object SessionRepository {
     }
 
     fun cancelSession(session: Session) {
+        val refundAmount = sessionQueries.getCoinOnHold(id = session.id).executeAsOne().toInt()
+        DatabaseHelper.conductCoinTransaction(session.id, session.creatorId, refundAmount, "refund")
         sessionQueries.cancelSession(
             id = session.id
         )

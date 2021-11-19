@@ -23,6 +23,7 @@ object DatabaseHelper {
         driver = ds.asJdbcDriver()
         database = Database(driver)
         migrate()
+        createStoredProcedure()
     }
 
     private fun migrate() {
@@ -35,6 +36,67 @@ object DatabaseHelper {
             println("Migrating to ${version + 1}")
             Database.Schema.migrate(driver, version, version + 1)
             database.settingsQueries.setVersion(version + 1)
+        }
+    }
+
+    private fun createStoredProcedure() {
+        driver.execute(0,"DROP PROCEDURE IF EXISTS ConductCoinTransaction;",0)
+        driver.execute(1,
+            """
+CREATE PROCEDURE ConductCoinTransaction (
+    IN SessionId INT(4),
+    IN Username VARCHAR(255),
+    IN Amount BIGINT(8),
+    IN Description TEXT(500)
+) BEGIN
+
+UPDATE
+    user u
+SET
+    u.coin_balance = u.coin_balance + Amount
+WHERE
+    u.username = Username;
+
+INSERT INTO
+    doji_coin_transaction (
+        description,
+        amount,
+        timestamp,
+        external_transaction_id,
+        source_id,
+        user_id
+    )
+VALUES
+    (
+        Description,
+        Amount,
+        NOW(),
+        0,
+        (
+            SELECT
+                source_id
+            FROM
+                session s
+            WHERE
+                s.id = SessionId
+        ),
+        Username
+    );
+END;
+            """,
+            0
+        )
+    }
+
+    fun conductCoinTransaction(session_id: Int, username: String, amount: Int, description: String) {
+        driver.execute(2,
+            "CALL ConductCoinTransaction(?,?,?,?)",
+            4
+        ) {
+            bindLong(1,session_id.toLong())
+            bindString(2,username)
+            bindLong(3,amount.toLong())
+            bindString(4,description)
         }
     }
 }
