@@ -4,11 +4,14 @@ VALUES (
     500,
     500,
     "PENDING",
-    "How to Take Care Your Cat and Corgi",
+    "How to Take Care of Your Cat and Corgi",
     1,
     NOW(),
     1,
     "Cat",
     "John",
-    "How to Take Care Your Cat and Corgi"
+    "How to Take Care of Your Cat and Corgi"
 );
+
+INSERT INTO session_participant (session_id, user_id)
+VALUES (1, "Cat"),(1,"John");

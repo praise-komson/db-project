@@ -106,12 +106,39 @@ VALUES
 ('Rick',
  'How to Rick Roll People',
  200,
- 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'),
+ 'Never gonna give you up
+  Never gonna let you down
+  Never gonna run around and desert you
+  Never gonna make you cry
+  Never gonna say goodbye
+  Never gonna tell a lie and hurt you'),
 -- Service 2
 ('John',
- 'How to Take Care Your Cat and Corgi',
+ 'How to Take Care of Your Cat and Corgi',
  100,
- 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
+ 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'),
+ -- Service 3
+ ('John',
+ 'The Best Session in the World',
+ 5000,
+ 'Khong dee mai tong pood yue'),
+ -- Service 4
+ ('Rick',
+ 'All about Lorem Ipsum',
+ 50,
+ 'From its medieval origins to the digital era, learn everything there is to know about the ubiquitous lorem ipsum passage.'),
+ -- Service 5
+ ('John',
+ 'Learn How to Talk to Your Cat',
+ 150,
+ 'Cat ipsum dolor sit amet, poop on floor and watch human clean up prance along on top of the garden fence, annoy the neighbors dog and make it bark. Attack curtains eat all the power cords and meow in empty rooms. Nya nya nyan chase imaginary bugs cry louder at reflection yet meow pee on walls it smells like breakfast.'),
+ -- Service 6
+ ('John',
+ 'How to Sound Like a Philosopher',
+ 50,
+ 'If one examines precultural libertarianism, one is faced with a choice: either accept rationalism or conclude that context is a product of the masses, given that Marx’s essay on precultural libertarianism is invalid. The subject is contextualised into a precapitalist dematerialism that includes culture as a reality.');
+
+
 
 -- Friend
 -- I make a Redundant for easily query.
