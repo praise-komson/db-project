@@ -52,6 +52,7 @@ object SessionRepository {
             status = session.status
         )
         sessionsState.refetch()
+        mySessionsState.refetch()
     }
 
     fun cancelSession(session: Session) {
@@ -60,6 +61,7 @@ object SessionRepository {
         sessionQueries.cancelSession(
             id = session.id
         )
+        sessionsState.refetch()
         mySessionsState.refetch()
     }
 }
