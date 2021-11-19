@@ -5,7 +5,7 @@ import repository.UserRepository
 import db.Session as DbSession
 
 data class Session(
-    val id: Int,
+    var id: Int,
     val meetingProviderId: String,
     val fee: Long,
     var coinOnHold: Long,
@@ -32,6 +32,7 @@ data class Session(
         expertId = dbSession.expert_id,
         serviceName = dbSession.service_name
     )
+
     constructor() : this(
         id = 1,
         meetingProviderId = "1",
@@ -52,7 +53,8 @@ data class Session(
     fun save() {
         SessionRepository.updateSession(this)
     }
-    fun cancel(){
+
+    fun cancel() {
         SessionRepository.cancelSession(this)
     }
 }

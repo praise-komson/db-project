@@ -13,7 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import controller.UserController
+import db.DatabaseHelper
 import entity.Service
+import entity.Session
+import repository.SessionRepository
+import repository.TransactionSourceRepository
 import ui.components.CustomTextField
 import ui.components.NavBarStandard
 import ui.components.NewSessionHeader
@@ -23,8 +28,10 @@ import kotlin.math.ceil
 
 @Composable
 fun NewSession(
-    service: Service
+    service: Service,
+    onFinishNewSession: () -> Unit,
 ) {
+    var startDate by remember { mutableStateOf("2021-11-30") }
     var startTime by remember { mutableStateOf("08:00") }
     var duration by remember { mutableStateOf("1") }
     Column {
@@ -37,12 +44,16 @@ fun NewSession(
                 color = InkBase,
                 style = SmallNormalRegular
             )
-            NewSessionConfiguration(startTime, { value ->
+            NewSessionConfiguration(startDate, { value ->
+                if (value.matches(Regex("\\d{0,4}-\\d{0,2}-\\d{0,2}"))) {
+                    startDate = value
+                }
+            }, startTime, { value ->
                 if (value.matches(Regex("\\d{0,2}:\\d{0,2}"))) {
                     startTime = value
                 }
             }, duration, { value ->
-                if (value.matches(Regex("\\d*"))) {
+                if (value.matches(Regex("\\d{0,2}"))) {
                     duration = value
                 }
             })
@@ -52,13 +63,47 @@ fun NewSession(
             color = MaterialTheme.colors.surface,
             elevation = 8.dp
         ) {
-            PriceSummary(service.fee * Integer.parseInt(duration.ifEmpty { "0" }))
+            PriceSummary(service.fee * Integer.parseInt(duration.ifEmpty { "0" })) {
+                val durationInt = Integer.parseInt(duration.ifEmpty { "0" })
+                if (durationInt <= 0) {
+                    return@PriceSummary
+                }
+                DatabaseHelper.database.transaction {
+                    afterCommit(onFinishNewSession)
+                    afterRollback {
+                        print("ERROR HAPPENED")
+                        onFinishNewSession()
+                    }
+                    val sourceId = TransactionSourceRepository.createTransactionSource()
+                    val username = UserController.username!!
+                    var session = Session(
+                        id = 1,
+                        meetingProviderId = "1",
+                        fee = service.fee,
+                        coinOnHold = 0,
+                        status = "PENDING",
+                        topic = service.sname,
+                        duration = durationInt,
+                        startTime = String.format("%s %s:00", startDate, startTime),
+                        sourceId = sourceId.toInt(),
+                        creatorId = username,
+                        expertId = service.expertId,
+                        serviceName = service.sname,
+                    )
+                    session = SessionRepository.insertSession(session)
+                    // TODO: add friend?
+                    SessionRepository.insertSessionParticipant(session.id, username)
+                    // TODO: call stored procedure to transfer coin
+                }
+            }
         }
     }
 }
 
 @Composable
 fun NewSessionConfiguration(
+    startDate: String,
+    onStartDateChange: (String) -> Unit,
     startTime: String,
     onStartTimeChange: (String) -> Unit,
     duration: String,
@@ -66,9 +111,9 @@ fun NewSessionConfiguration(
 ) {
     Column(modifier = Modifier.padding(24.dp)) {
         CustomTextField(
-            value = "13 Dec 2021",
-            onValueChange = {},
-            label = { Text("Date") },
+            value = startDate,
+            onValueChange = onStartDateChange,
+            label = { Text("Date (yyyy-mm-dd)") },
             modifier = Modifier.fillMaxWidth()
         )
         TimeSelectorLayout(
@@ -123,7 +168,8 @@ fun TimeSelectorLayout(
 
 @Composable
 fun PriceSummary(
-    price: Long
+    price: Long,
+    onClickSchedule: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -154,7 +200,7 @@ fun PriceSummary(
             )
         }
         Button(
-            onClick = {},
+            onClick = onClickSchedule,
             modifier = Modifier
                 .fillMaxWidth(),
             shape = CircleShape

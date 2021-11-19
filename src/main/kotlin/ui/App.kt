@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.arkivanov.decompose.router.Router
+import com.arkivanov.decompose.router.popWhile
 import com.arkivanov.decompose.router.push
 import com.arkivanov.decompose.router.replaceCurrent
 import controller.UserController
@@ -50,7 +51,9 @@ fun App() {
                                     }
                                 )
                             is Configuration.NewSession ->
-                                NewSession(config.service)
+                                NewSession(config.service, onFinishNewSession = {
+                                    router.popWhile { configuration -> configuration !is Configuration.MySessions }
+                                })
                             is Configuration.SessionRequests ->
                                 SessionRequests()
                         }.let {}

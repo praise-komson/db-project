@@ -1,0 +1,5 @@
+createTransactionSource:
+INSERT INTO transaction_source (source_id) VALUES (NULL);
+
+lastInsertRowId:
+SELECT last_insert_id();

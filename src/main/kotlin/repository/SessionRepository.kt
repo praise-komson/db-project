@@ -18,6 +18,33 @@ object SessionRepository {
     }
     val mySessions by mySessionsState
 
+    fun insertSession(session: Session): Session {
+        val sessionId = sessionQueries.transactionWithResult<Long> {
+            sessionQueries.insertSession(
+                session.meetingProviderId,
+                session.fee,
+                session.coinOnHold,
+                session.status,
+                session.topic,
+                session.duration,
+                session.startTime,
+                session.sourceId,
+                session.creatorId,
+                session.expertId,
+                session.serviceName,
+            )
+            return@transactionWithResult sessionQueries.lastInsertRowId().executeAsOne()
+        }
+        sessionsState.refetch()
+        mySessionsState.refetch()
+        session.id = sessionId.toInt()
+        return session
+    }
+
+    fun insertSessionParticipant(session_id: Int, user_id: String) {
+        sessionQueries.insertSessionParticipant(session_id, user_id)
+    }
+
     fun updateSession(session: Session) {
         sessionQueries.updateSession(
             id = session.id,

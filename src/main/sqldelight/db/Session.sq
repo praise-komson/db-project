@@ -23,6 +23,16 @@ VALUES (
     :service_name
 );
 
+insertSessionParticipant:
+INSERT session_participant (session_id, user_id)
+VALUES (
+	:session_id,
+	:user_id
+);
+
+lastInsertRowId:
+SELECT last_insert_id();
+
 updateSession:
 UPDATE session
 SET
