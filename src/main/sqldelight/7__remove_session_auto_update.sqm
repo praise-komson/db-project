@@ -1,0 +1,1 @@
+ALTER TABLE session CHANGE start_time start_time DATETIME NOT NULL;
