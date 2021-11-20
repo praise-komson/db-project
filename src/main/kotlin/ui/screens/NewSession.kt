@@ -1,5 +1,7 @@
 package ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import controller.UserController
 import db.DatabaseHelper
@@ -60,7 +63,8 @@ fun NewSession(
             elevation = 8.dp
         ) {
             val totalPrice = service.fee * Integer.parseInt(duration.ifEmpty { "0" })
-            PriceSummary(totalPrice) {
+            val coinBalance = UserController.user?.coin_balance ?: 0
+            PriceSummary(totalPrice, totalPrice > coinBalance) {
                 val durationInt = Integer.parseInt(duration.ifEmpty { "0" })
                 if (durationInt <= 0) {
                     return@PriceSummary
@@ -166,7 +170,8 @@ fun TimeSelectorLayout(
 @Composable
 fun PriceSummary(
     price: Long,
-    onClickSchedule: () -> Unit,
+    notEnoughCoins: Boolean,
+    onClickSchedule: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -177,29 +182,57 @@ fun PriceSummary(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(bottom = 24.dp)
                 .height(32.dp)
         ) {
             Text(
                 text = "Total Price",
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .alignByBaseline(),
                 style = LargeNoneMedium
             )
+            val priceColor = if (notEnoughCoins) RedBase else PrimaryDark
             Text(
                 text = "$price ",
-                color = PrimaryDark,
+                modifier = Modifier.alignByBaseline(),
+                color = priceColor,
                 style = Title3
             )
             Text(
                 text = "Doji coins",
-                color = PrimaryDark,
+                modifier = Modifier.alignByBaseline(),
+                color = priceColor,
                 style = RegularNormalMedium
             )
+        }
+        AnimatedVisibility(
+            visible = notEnoughCoins,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(top = 12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource("icons/alert-triangle.svg"),
+                    contentDescription = "",
+                    modifier = Modifier.padding(end = 4.dp)
+                )
+                Text(
+                    text = "You do not have enough Doji coins!",
+                    color = RedBase,
+                    style = TinyNoneRegular
+                )
+            }
         }
         CustomButton(
             onClick = onClickSchedule,
             modifier = Modifier
+                .padding(top = 24.dp)
                 .fillMaxWidth()
+                .height(48.dp),
+            enabled = !notEnoughCoins
         ) {
             Text("Schedule")
         }
