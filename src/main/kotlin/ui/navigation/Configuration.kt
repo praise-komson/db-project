@@ -14,4 +14,5 @@ sealed class Configuration : Parcelable {
     object MyRequests : Configuration()
     object MyChats : Configuration()
     data class ChatRoom(val chat: Chat) : Configuration()
+    object CreateChat : Configuration()
 }

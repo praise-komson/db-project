@@ -22,6 +22,17 @@ import ui.navigation.Configuration
 fun MyChats(router: Router<Configuration, Any>) {
     ScreenLayout {
         NavBarStandard(title = { Text(text = "Chats") })
+        Row(
+            modifier = Modifier
+                .clickable {
+                    router.push(Configuration.CreateChat)
+                }
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("Create New Chat")
+        }
         for (chat in ChatController.myChats) {
             Divider ()
             Row(

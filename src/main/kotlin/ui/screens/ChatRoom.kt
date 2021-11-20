@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -21,8 +22,7 @@ import ui.components.CustomButton
 import ui.components.CustomTextField
 import ui.components.NavBarStandard
 import ui.components.ScreenLayout
-import ui.theme.InkLight
-import ui.theme.PrimaryBase
+import ui.theme.*
 
 @Composable
 fun ChatRoom(chat_id: Id<Chat>) {
@@ -46,7 +46,13 @@ fun ChatRoom(chat_id: Id<Chat>) {
                 for ((index, message) in chat.messages.withIndex()) {
                     key (index) {
                         Spacer(Modifier.size(8.dp))
-                        TextMessage(message)
+                        TextMessage(
+                            message,
+                            if (index > 0) {
+                                chat.messages[index].sender != chat.messages[index-1].sender
+                            }
+                            else true
+                        )
                     }
                 }
             }
@@ -64,7 +70,7 @@ fun ChatRoom(chat_id: Id<Chat>) {
                 label = { Text("Chat") },
                 modifier = Modifier.weight(1f),
             )
-            Spacer(Modifier.width(8.dp))
+            Spacer(Modifier.width(16.dp))
             CustomButton(
                 onClick = {
                     ChatController.sendMessage(chat._id, value)
@@ -79,17 +85,23 @@ fun ChatRoom(chat_id: Id<Chat>) {
 }
 
 @Composable
-fun TextMessage(message: Message) {
-    Column () {
-        Text (message.sender, color = InkLight)
-        Spacer(Modifier.size(4.dp))
+fun TextMessage(message: Message, showName: Boolean) {
+    val isSender = message.sender == UserController.username
+    Column (
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = if (isSender) Alignment.End else Alignment.Start
+    ) {
+        if (showName) {
+            Text (message.sender, color = InkLight)
+            Spacer(Modifier.size(8.dp))
+        }
         Box (
             modifier = Modifier
-                .clip(RoundedCornerShape(16.dp))
-                .background(PrimaryBase)
-                .padding(8.dp)
+                .clip(RoundedCornerShape(20.dp))
+                .background(if (isSender) PrimaryBase else SkyLight)
+                .padding(12.dp)
         ) {
-            Text(text = message.text, color = Color.White)
+            Text(text = message.text, color = if (isSender) Color.White else InkDarkest)
         }
     }
 }

@@ -13,4 +13,5 @@ object UserController {
     val user by derivedStateOf { UserRepository.users.firstOrNull { it.username == username } }
     val isLoggedIn by derivedStateOf { user != null }
     val isExpert by derivedStateOf { UserRepository.experts.any { it.username == username } }
+    val friends by derivedStateOf { UserRepository.getFriends(username!!) }
 }

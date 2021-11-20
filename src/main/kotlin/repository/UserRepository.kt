@@ -2,6 +2,7 @@ package repository
 
 import androidx.compose.runtime.getValue
 import db.DatabaseHelper
+import db.GetFriends
 import repository.utils.makeQueryState
 
 object UserRepository {
@@ -19,5 +20,9 @@ object UserRepository {
     fun topUpUser(username: String, amount: Int) {
         userQueries.topUpUser(username = username, amount = amount.toLong(), description = "top-up")
         refetchUsers()
+    }
+
+    fun getFriends(username: String): List<GetFriends> {
+        return userQueries.getFriends(username = username).executeAsList()
     }
 }

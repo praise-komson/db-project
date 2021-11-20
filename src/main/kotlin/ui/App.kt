@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
@@ -62,6 +63,8 @@ fun App() {
                                 MyChats(router)
                             is Configuration.ChatRoom ->
                                 ChatRoom(config.chat._id)
+                            is Configuration.CreateChat ->
+                                key(UserController.username) { CreateChat(router) }
                         }.let {}
                     }
                 }

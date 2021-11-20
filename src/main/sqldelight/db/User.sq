@@ -49,3 +49,18 @@ VALUES
     );
 -- TODO: haven't implemented payment_method
 }
+
+getFriends:
+SELECT
+    username,
+    password,
+    display_name,
+    email,
+    coin_balance,
+    online_status,
+    register_timestamp,
+    file.url AS profile_pic_url
+FROM friend
+INNER JOIN user u ON user2_id = username
+INNER JOIN file ON file.id = profile_pic_id
+WHERE user1_id = :username;
