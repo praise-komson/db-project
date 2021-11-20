@@ -9,10 +9,8 @@ import androidx.compose.material.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import ui.theme.PrimaryBase
-import ui.theme.PrimaryLightest
-import ui.theme.RegularNoneMedium
-import ui.theme.SkyWhite
+import androidx.compose.ui.graphics.Color
+import ui.theme.*
 
 @Composable
 fun buttonColorsPrimary() = ButtonDefaults.buttonColors(
@@ -21,9 +19,15 @@ fun buttonColorsPrimary() = ButtonDefaults.buttonColors(
 )
 
 @Composable
-fun buttonColorsSecondary() =ButtonDefaults.buttonColors(
+fun buttonColorsSecondary() = ButtonDefaults.buttonColors(
     backgroundColor = PrimaryLightest,
     contentColor = PrimaryBase
+)
+
+@Composable
+fun buttonColorsTransparent() = ButtonDefaults.buttonColors(
+    backgroundColor = Color.Transparent,
+    contentColor = InkDarker
 )
 
 @Composable

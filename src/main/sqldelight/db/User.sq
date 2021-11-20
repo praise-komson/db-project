@@ -24,3 +24,8 @@ SELECT
 FROM expert e
 INNER JOIN user u ON e.username = u.username
 INNER JOIN file ON file.id = u.profile_pic_id;
+
+topUpUser:
+UPDATE user
+SET coin_balance = coin_balance + :amount
+WHERE username = :username;
