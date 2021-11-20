@@ -4,7 +4,6 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -23,11 +22,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
 import db.GetMySessions
 import entity.Session
 import repository.SessionRepository
 import ui.components.CustomButton
 import ui.components.NavBarLarge
+import ui.components.PopupScrim
 import ui.components.ScreenLayout
 import ui.theme.*
 import ui.util.imagePainter
@@ -40,72 +41,62 @@ fun MySessions(
     var popUpSession by remember { mutableStateOf<GetMySessions?>(null) }
 
     ScreenLayout {
-        Box {
-            Column {
-                Box {
-                    NavBarLarge(
-                        title = { Text("My Sessions") },
-                        actionButtons = {
-                            CustomButton(
-                                onClick = onNewSessionClick
-                            ) {
-                                Text("New")
-                                Icon(Icons.Default.Add, "")
-                            }
-                        }
-                    )
-                }
-                Box {
-                    LazyColumn {
-                        itemsIndexed(SessionRepository.mySessions) { index, session ->
-                            if (index > 0) {
-                                Divider()
-                            }
-                            SessionRow(onOpen = {
-                                showPopup = true
-                                popUpSession = session
-                            }, session)
+        Column {
+            Box {
+                NavBarLarge(
+                    title = { Text("My Sessions") },
+                    actionButtons = {
+                        CustomButton(
+                            onClick = onNewSessionClick
+                        ) {
+                            Text("New")
+                            Icon(Icons.Default.Add, "")
                         }
                     }
-                }
+                )
             }
-            Column {
-                AnimatedVisibility(
-                    visible = showPopup,
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ) {
-                    Spacer(modifier = Modifier
-                        .fillMaxSize()
-                        .background(InkDarkest.copy(alpha = 0.7f))
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-                        ) {
-                            showPopup = false
+            Box {
+                LazyColumn {
+                    itemsIndexed(SessionRepository.mySessions) { index, session ->
+                        if (index > 0) {
+                            Divider()
                         }
-                    )
-                }
-            }
-            Column {
-                Spacer(modifier = Modifier.weight(1f))
-                AnimatedVisibility(
-                    visible = showPopup,
-                    enter = slideInVertically { it },
-                    exit = slideOutVertically { it }
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(16.dp, 16.dp, 0.dp, 0.dp))
-                            .background(SkyWhite)
-                    ) {
-                        SessionPopUp(session = popUpSession!!, onClose = { showPopup = false })
+                        SessionRow(onOpen = {
+                            showPopup = true
+                            popUpSession = session
+                        }, session)
                     }
                 }
             }
         }
-
+    }
+    Popup {
+        Column {
+            AnimatedVisibility(
+                visible = showPopup,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                PopupScrim { showPopup = false }
+            }
+        }
+        Column {
+            Spacer(modifier = Modifier.weight(1f))
+            AnimatedVisibility(
+                visible = showPopup,
+                enter = slideInVertically { it },
+                exit = slideOutVertically { it }
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(16.dp, 16.dp, 0.dp, 0.dp))
+                        .background(SkyWhite)
+                ) {
+                    SessionPopUp(session = popUpSession!!, onClose = { showPopup = false })
+                }
+            }
+        }
     }
 }
 
