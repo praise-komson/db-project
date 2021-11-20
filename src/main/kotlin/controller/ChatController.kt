@@ -17,12 +17,12 @@ object ChatController {
     }
     val myChats: FindIterable<Chat> by myChatsState
     fun sendMessage(chat_id: Number, text: String) {
-        val message = Message(123, DateTimeFormatter.ISO_INSTANT.format(Instant.now()), text, UserController.username!!)
-        chats.updateOne(Chat::id eq chat_id, push(
+        val message = Message(DateTimeFormatter.ISO_INSTANT.format(Instant.now()), text, UserController.username!!)
+        chats.updateOne(Chat::_id eq chat_id, push(
             Chat::messages, message
         ))
     }
-    fun getChat(chat_id: Number): Chat? {
-        return chats.findOne(Chat::id eq chat_id)
+    fun getChat(chat_id: Number): Chat {
+        return chats.findOne(Chat::_id eq chat_id) ?: Chat()
     }
 }

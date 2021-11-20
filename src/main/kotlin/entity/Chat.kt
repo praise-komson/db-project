@@ -1,19 +1,18 @@
 package entity
 
 data class Chat (
-    val id: Int,
+    val _id: Int,
     val messages: List<Message>,
     val members: List<String>,
 ) {
     constructor(): this(
-        id = 1,
+        _id = 1,
         messages = emptyList(),
         members = emptyList(),
     )
 }
 
 data class Message (
-    val id: Int,
     val timestamp: String,
     val text: String,
     val sender: String,

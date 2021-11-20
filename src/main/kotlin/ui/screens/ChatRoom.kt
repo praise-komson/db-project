@@ -2,8 +2,9 @@ package ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
@@ -14,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import controller.ChatController
 import controller.UserController
-import entity.Chat
 import entity.Message
 import repository.utils.makeQueryState
 import ui.components.CustomButton
@@ -26,7 +26,7 @@ import ui.theme.PrimaryBase
 
 @Composable
 fun ChatRoom(chat_id: Number) {
-    val chatState = makeQueryState { ChatController.getChat(chat_id) ?: Chat() }
+    val chatState = makeQueryState { ChatController.getChat(chat_id) }
     val chat by chatState
 
     Column {
@@ -36,16 +36,18 @@ fun ChatRoom(chat_id: Number) {
                     .filter { member -> member != UserController.username }
                     .joinToString(", "))
             })
-            Column (
+            LazyColumn (
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 24.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.Bottom
             ) {
-                for (message in chat.messages) {
-                    Spacer(Modifier.size(8.dp))
-                    key(message.id) { TextMessage(message) }
+                itemsIndexed (chat.messages) { index, message ->
+                    key(index) {
+                        Spacer(Modifier.size(8.dp))
+                        TextMessage(message)
+                    }
                 }
             }
         }
@@ -65,7 +67,7 @@ fun ChatRoom(chat_id: Number) {
             Spacer(Modifier.width(8.dp))
             CustomButton(
                 onClick = {
-                    ChatController.sendMessage(chat.id, value)
+                    ChatController.sendMessage(chat._id, value)
                     setValue("")
                     chatState.refetch()
                 }

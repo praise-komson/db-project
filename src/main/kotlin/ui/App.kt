@@ -61,7 +61,7 @@ fun App() {
                             is Configuration.MyChats ->
                                 MyChats(router)
                             is Configuration.ChatRoom ->
-                                ChatRoom(config.chat.id)
+                                ChatRoom(config.chat._id)
                         }.let {}
                     }
                 }
