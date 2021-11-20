@@ -25,7 +25,27 @@ FROM expert e
 INNER JOIN user u ON e.username = u.username
 INNER JOIN file ON file.id = u.profile_pic_id;
 
-topUpUser:
+topUpUser {
 UPDATE user
 SET coin_balance = coin_balance + :amount
 WHERE username = :username;
+INSERT INTO
+    doji_coin_transaction (
+        description,
+        amount,
+        timestamp,
+        external_transaction_id,
+        source_id,
+        user_id
+    )
+VALUES
+    (
+        :description,
+        :amount,
+        NOW(),
+        1,
+        1,
+        :username
+    );
+-- TODO: haven't implemented payment_method
+}

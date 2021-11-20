@@ -17,7 +17,7 @@ object UserRepository {
     }
 
     fun topUpUser(username: String, amount: Int) {
-        userQueries.topUpUser(username = username, amount = amount.toLong())
+        userQueries.topUpUser(username = username, amount = amount.toLong(), description = "top-up")
         refetchUsers()
     }
 }
