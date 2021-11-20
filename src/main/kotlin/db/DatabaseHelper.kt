@@ -70,6 +70,8 @@ SET
 WHERE
     u.username = Username;
 
+UPDATE session SET coin_on_hold = coin_on_hold - Amount WHERE id = SessionId;
+
 INSERT INTO
     doji_coin_transaction (
         description,
@@ -102,7 +104,6 @@ END;
     }
 
     fun conductCoinTransaction(session_id: Int, username: String, amount: Long, description: String) {
-        val session = database.sessionQueries.getSessionById(session_id).executeAsOne()
         driver.execute(
             2,
             "CALL ConductCoinTransaction(?,?,?,?)",
@@ -113,7 +114,6 @@ END;
             bindLong(3, amount)
             bindString(4, description)
         }
-        database.sessionQueries.updateSession(session.coin_on_hold - amount, session.status, session.id)
         UserRepository.refetchUsers()
     }
 }
