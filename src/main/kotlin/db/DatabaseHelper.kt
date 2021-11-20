@@ -63,13 +63,7 @@ CREATE PROCEDURE ConductCoinTransaction (
     IN Description TEXT(500)
 ) BEGIN
 
-UPDATE
-    user u
-SET
-    u.coin_balance = u.coin_balance + Amount
-WHERE
-    u.username = Username;
-
+UPDATE user u SET u.coin_balance = u.coin_balance + Amount WHERE u.username = Username;
 UPDATE session SET coin_on_hold = coin_on_hold - Amount WHERE id = SessionId;
 
 INSERT INTO
@@ -87,14 +81,7 @@ VALUES
         Amount,
         NOW(),
         0,
-        (
-            SELECT
-                source_id
-            FROM
-                session s
-            WHERE
-                s.id = SessionId
-        ),
+        (SELECT source_id FROM session s WHERE s.id = SessionId),
         Username
     );
 END;
