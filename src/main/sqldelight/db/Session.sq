@@ -5,13 +5,32 @@ getSessionById:
 SELECT * FROM session
 WHERE id = :id;
 
-getMySession:
-SELECT id, meeting_provider_id,fee,coin_on_hold,status,topic,duration,start_time,source_id,creator_id,expert_id,service_name
-FROM `session` s INNER JOIN session_participant p ON s.id = p.session_id
-WHERE user_id = :user_id;
+getMySessions:
+SELECT
+    s.id,
+    status,
+    topic,
+    start_time,
+    f.url AS expert_profile_pic_url
+FROM `session` s
+INNER JOIN user u ON s.expert_id = u.username
+INNER JOIN file f ON f.id = u.profile_pic_id
+INNER JOIN session_participant p ON s.id = p.session_id
+WHERE p.user_id = :user_id;
 
-getCoinOnHold:
-SELECT coin_on_hold
+getMyRequests:
+SELECT
+    s.id,
+    topic,
+    start_time,
+    f.url AS creator_profile_pic_url
+FROM session s
+INNER JOIN user u ON s.creator_id = u.username
+INNER JOIN file f ON f.id = u.profile_pic_id
+WHERE expert_id = :user_id AND status = 'PENDING';
+
+getRefundInfo:
+SELECT coin_on_hold, creator_id
 FROM session
 WHERE id = :id;
 
@@ -45,6 +64,12 @@ updateSession:
 UPDATE session
 SET
     coin_on_hold = :coin_on_hold,
+    status = :status
+WHERE id = :id;
+
+updateSessionStatus:
+UPDATE session
+SET
     status = :status
 WHERE id = :id;
 

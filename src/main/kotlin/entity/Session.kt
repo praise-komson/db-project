@@ -1,7 +1,5 @@
 package entity
 
-import repository.SessionRepository
-import repository.UserRepository
 import db.Session as DbSession
 
 data class Session(
@@ -47,16 +45,6 @@ data class Session(
         expertId = "1",
         serviceName = "1"
     )
-
-    val expert by lazy { UserRepository.experts.first { it.username == expertId } }
-
-    fun save() {
-        SessionRepository.updateSession(this)
-    }
-
-    fun cancel() {
-        SessionRepository.cancelSession(this)
-    }
 
     enum class Status {
         PENDING, ACCEPTED, DECLINED, ENDED, REVIEWED, CANCELED

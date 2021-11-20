@@ -14,10 +14,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,7 +23,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import controller.SessionController
+import db.GetMySessions
 import entity.Session
 import repository.SessionRepository
 import ui.components.CustomButton
@@ -39,8 +36,9 @@ import ui.util.imagePainter
 fun MySessions(
     onNewSessionClick: () -> Unit
 ) {
-    val showPopup = remember { mutableStateOf(false) }
-    var popUpSession = Session()
+    var showPopup by remember { mutableStateOf(false) }
+    var popUpSession by remember { mutableStateOf<GetMySessions?>(null) }
+
     ScreenLayout {
         Box {
             Column {
@@ -59,32 +57,32 @@ fun MySessions(
                 }
                 Box {
                     LazyColumn {
-                        itemsIndexed(SessionController.mySessions) { index, session ->
+                        itemsIndexed(SessionRepository.mySessions) { index, session ->
                             if (index > 0) {
                                 Divider()
                             }
-                            SessionRow(onOpen = { showPopup.value = !showPopup.value
-                                popUpSession = it
+                            SessionRow(onOpen = {
+                                showPopup = true
+                                popUpSession = session
                             }, session)
                         }
                     }
                 }
             }
-            val bgColor by animateColorAsState(if (showPopup.value) InkDarkest.copy(alpha = 0.7f) else InkDarkest.copy(alpha = 0.0f))
             Column {
                 AnimatedVisibility(
-                    visible = showPopup.value,
+                    visible = showPopup,
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {
                     Spacer(modifier = Modifier
                         .fillMaxSize()
-                        .background(bgColor)
+                        .background(InkDarkest.copy(alpha = 0.7f))
                         .clickable(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() }
                         ) {
-                            showPopup.value = false
+                            showPopup = false
                         }
                     )
                 }
@@ -92,7 +90,7 @@ fun MySessions(
             Column {
                 Spacer(modifier = Modifier.weight(1f))
                 AnimatedVisibility(
-                    visible = showPopup.value,
+                    visible = showPopup,
                     enter = slideInVertically { it },
                     exit = slideOutVertically { it }
                 ) {
@@ -102,7 +100,7 @@ fun MySessions(
                             .clip(RoundedCornerShape(16.dp, 16.dp, 0.dp, 0.dp))
                             .background(SkyWhite)
                     ) {
-                        SessionPopUp(session = popUpSession, onClose = { showPopup.value = !showPopup.value })
+                        SessionPopUp(session = popUpSession!!, onClose = { showPopup = false })
                     }
                 }
             }
@@ -112,7 +110,7 @@ fun MySessions(
 }
 
 @Composable
-fun SessionRow(onOpen: (Session) -> Unit, session: Session) {
+fun SessionRow(onOpen: () -> Unit, session: GetMySessions) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -122,7 +120,7 @@ fun SessionRow(onOpen: (Session) -> Unit, session: Session) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = imagePainter(session.expert.profile_pic_url),
+            painter = imagePainter(session.expert_profile_pic_url),
             contentDescription = "",
             modifier = Modifier
                 .size(40.dp)
@@ -140,7 +138,7 @@ fun SessionRow(onOpen: (Session) -> Unit, session: Session) {
                 style = RegularTightMedium
             )
             Text(
-                text = session.startTime,
+                text = session.start_time,
                 color = InkLighter,
                 style = SmallTightRegular
             )
@@ -208,9 +206,7 @@ fun SessionRow(onOpen: (Session) -> Unit, session: Session) {
                     .background(statusColorBg)
                     .padding(horizontal = 10.dp, vertical = 5.dp)
             ){
-                Row(
-//                    modifier = Modifier.align(Alignment.Center)
-                ) {
+                Row {
                     Icon(painterResource(statusPath), "", modifier = statusMod,
                         tint = statusTint
                     )
@@ -223,15 +219,14 @@ fun SessionRow(onOpen: (Session) -> Unit, session: Session) {
             }
         }
         Spacer(Modifier.width(12.dp))
-        IconButton( onClick = { onOpen(session) }) {
+        IconButton( onClick = { onOpen() }) {
             Icon(Icons.Default.MoreVert, "")
         }
-
     }
 }
 
 @Composable
-fun SessionPopUp(session: Session ,onClose: () -> Unit){
+fun SessionPopUp(session: GetMySessions ,onClose: () -> Unit){
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -252,7 +247,7 @@ fun SessionPopUp(session: Session ,onClose: () -> Unit){
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    SessionRepository.cancelSession(session)
+                    SessionRepository.cancelSession(session.id)
                     onClose()
                 }
                 .height(56.dp)

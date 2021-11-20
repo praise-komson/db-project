@@ -10,13 +10,15 @@ object SessionRepository {
 
     private val sessionQueries = DatabaseHelper.database.sessionQueries
 
-    private val sessionsState = makeQueryState { sessionQueries.getSessions().executeAsList().map(::Session) }
-    val sessions by sessionsState
-
     private val mySessionsState = makeQueryState {
-        UserController.username?.let { sessionQueries.getMySession(user_id = it).executeAsList().map(::Session) } ?: emptyList()
+        UserController.username?.let { sessionQueries.getMySessions(user_id = it).executeAsList() } ?: emptyList()
     }
     val mySessions by mySessionsState
+
+    private val myRequestsState = makeQueryState {
+        UserController.username?.let { sessionQueries.getMyRequests(user_id = it).executeAsList() } ?: emptyList()
+    }
+    val myRequests by myRequestsState
 
     fun insertSession(session: Session): Session {
         val sessionId = sessionQueries.transactionWithResult<Long> {
@@ -35,8 +37,8 @@ object SessionRepository {
             )
             return@transactionWithResult sessionQueries.lastInsertRowId().executeAsOne()
         }
-        sessionsState.refetch()
         mySessionsState.refetch()
+        myRequestsState.refetch()
         session.id = sessionId.toInt()
         return session
     }
@@ -45,23 +47,22 @@ object SessionRepository {
         sessionQueries.insertSessionParticipant(session_id, user_id)
     }
 
-    fun updateSession(session: Session) {
-        sessionQueries.updateSession(
-            id = session.id,
-            coin_on_hold = session.coinOnHold,
-            status = session.status
+    fun updateSessionStatus(sessionId: Int, status: Session.Status) {
+        sessionQueries.updateSessionStatus(
+            id = sessionId,
+            status = status
         )
-        sessionsState.refetch()
         mySessionsState.refetch()
+        myRequestsState.refetch()
     }
 
-    fun cancelSession(session: Session) {
-        val refundAmount = sessionQueries.getCoinOnHold(id = session.id).executeAsOne()
-        DatabaseHelper.conductCoinTransaction(session.id, session.creatorId, refundAmount, "refund")
+    fun cancelSession(sessionId: Int) {
+        val (refundAmount, creatorId) = sessionQueries.getRefundInfo(id = sessionId).executeAsOne()
+        DatabaseHelper.conductCoinTransaction(sessionId, creatorId, refundAmount, "refund")
         sessionQueries.cancelSession(
-            id = session.id
+            id = sessionId
         )
-        sessionsState.refetch()
         mySessionsState.refetch()
+        myRequestsState.refetch()
     }
 }

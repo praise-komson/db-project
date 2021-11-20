@@ -1,7 +1,6 @@
 package ui.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -12,11 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import controller.SessionController
+import db.GetMyRequests
 import entity.Session
+import repository.SessionRepository
 import ui.components.CustomButton
 import ui.components.NavBarLarge
 import ui.components.ScreenLayout
@@ -36,18 +35,18 @@ fun MyRequests() {
 //        depend on the pattern from MySessions
 //        Row () { }
         LazyColumn {
-            itemsIndexed(SessionController.myRequests) { index, session ->
+            itemsIndexed(SessionRepository.myRequests) { index, request ->
                 if (index > 0) {
                     Divider()
                 }
-                RequestRow(session)
+                RequestRow(request)
             }
         }
     }
 }
 
 @Composable
-fun RequestRow(session: Session) {
+fun RequestRow(request: GetMyRequests) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -55,12 +54,11 @@ fun RequestRow(session: Session) {
             .padding(start = 24.dp, end = 12.dp),
     ) {
         Image(
-            painter = imagePainter(session.expert.profile_pic_url),
+            painter = imagePainter(request.creator_profile_pic_url),
             contentDescription = "",
             modifier = Modifier
                 .size(40.dp)
-                .clip(CircleShape)
-                .background(Color.LightGray),
+                .clip(CircleShape),
             contentScale = ContentScale.Crop
         )
         Spacer(Modifier.width(12.dp))
@@ -68,12 +66,12 @@ fun RequestRow(session: Session) {
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = session.topic,
+                text = request.topic,
                 color = InkDarkest,
                 style = RegularTightMedium
             )
             Text(
-                text = session.startTime,
+                text = request.start_time,
                 color = InkLighter,
                 style = SmallTightRegular
             )
@@ -84,8 +82,7 @@ fun RequestRow(session: Session) {
             ) {
                 CustomButton(
                     onClick = {
-                        session.status = Session.Status.ACCEPTED
-                        session.save()
+                        SessionRepository.updateSessionStatus(sessionId = request.id, status = Session.Status.ACCEPTED)
                     }
                 ) {
                     Text(text = "Accept")
@@ -93,8 +90,7 @@ fun RequestRow(session: Session) {
                 Spacer(Modifier.width(12.dp))
                 CustomButton(
                     onClick = {
-                        session.status = Session.Status.DECLINED
-                        session.save()
+                        SessionRepository.updateSessionStatus(sessionId = request.id, status = Session.Status.DECLINED)
                     },
                     colors = buttonColorsSecondary()
                 ) {
