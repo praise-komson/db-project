@@ -122,56 +122,37 @@ fun RowButton(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TopUpDialog(
     show: Boolean,
     onDismissRequest: () -> Unit,
     onTopUp: (amount: Int) -> Unit
 ) {
-    Popup {
-        Column {
-            AnimatedVisibility(
-                visible = show,
-                enter = fadeIn(),
-                exit = fadeOut()
+    BottomSheet(
+        visible = show,
+        onDismissRequest = onDismissRequest
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(24.dp)
+        ) {
+            Text(
+                text = "Top up",
+                color = InkDarkest,
+                style = Title3
+            )
+            TopUpButton(100, onTopUp)
+            TopUpButton(500, onTopUp)
+            TopUpButton(1000, onTopUp)
+            CustomButton(
+                onClick = onDismissRequest,
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth()
+                    .height(48.dp),
+                colors = buttonColorsTransparent()
             ) {
-                PopupScrim(onDismissRequest)
-            }
-        }
-        Column {
-            Spacer(modifier = Modifier.weight(1f))
-            AnimatedVisibility(
-                visible = show,
-                enter = slideInVertically { it },
-                exit = slideOutVertically { it }
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(16.dp, 16.dp, 0.dp, 0.dp))
-                        .background(SkyWhite)
-                        .padding(24.dp)
-                ) {
-                    Text(
-                        text = "Top up",
-                        color = InkDarkest,
-                        style = Title3
-                    )
-                    TopUpButton(100, onTopUp)
-                    TopUpButton(500, onTopUp)
-                    TopUpButton(1000, onTopUp)
-                    CustomButton(
-                        onClick = onDismissRequest,
-                        modifier = Modifier
-                            .padding(top = 16.dp)
-                            .fillMaxWidth()
-                            .height(48.dp),
-                        colors = buttonColorsTransparent()
-                    ) {
-                        Text("Done")
-                    }
-                }
+                Text("Done")
             }
         }
     }
