@@ -1,16 +1,13 @@
 package entity
 
+import org.litote.kmongo.Id
+import org.litote.kmongo.newId
+
 data class Chat (
-    val _id: Int,
-    val messages: List<Message>,
-    val members: List<String>,
-) {
-    constructor(): this(
-        _id = 1,
-        messages = emptyList(),
-        members = emptyList(),
-    )
-}
+    val _id: Id<Chat> = newId(),
+    val messages: List<Message> = emptyList(),
+    val members: List<String> = emptyList(),
+)
 
 data class Message (
     val timestamp: String,
