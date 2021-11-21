@@ -5,10 +5,10 @@ SELECT
     topic,
     start_time,
     f.url AS expert_profile_pic_url
-FROM `session` s
+FROM session_participant p
+INNER JOIN session s ON s.id = p.session_id
 INNER JOIN user u ON s.expert_id = u.username
 INNER JOIN file f ON f.id = u.profile_pic_id
-INNER JOIN session_participant p ON s.id = p.session_id
 WHERE p.user_id = :user_id;
 
 getMyRequests:
