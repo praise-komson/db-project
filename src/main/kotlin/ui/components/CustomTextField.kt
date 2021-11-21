@@ -8,13 +8,16 @@ import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.*
+import androidx.compose.material.LocalContentColor
+import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import ui.theme.*
@@ -40,6 +43,7 @@ fun CustomTextField(
             .zIndex(if (borderWidth > 1.5.dp) 1f else 0f),
         enabled = enabled,
         interactionSource = interactionSource,
+        cursorBrush = SolidColor(PrimaryBase),
         decorationBox = { innerTextField ->
             Column(
                 modifier = Modifier
