@@ -59,13 +59,12 @@ CREATE TABLE expert_application(
 
 -- File
 CREATE TABLE file(
-    id INT(4) NOT NULL,
+    id INT(4) NOT NULL PRIMARY KEY,
     bucket VARCHAR(255) NOT NULL,
     url VARCHAR(2048) NOT NULL,
     name VARCHAR(255) NOT NULL,
     size INT(4) NOT NULL,
-    mime_type VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id, bucket)
+    mime_type VARCHAR(255) NOT NULL
 );
 
 -- Friend
