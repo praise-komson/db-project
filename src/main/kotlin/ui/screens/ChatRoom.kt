@@ -8,9 +8,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.dp
 import controller.ChatController
 import controller.UserController
@@ -24,6 +26,7 @@ import ui.components.NavBarStandard
 import ui.components.ScreenLayout
 import ui.theme.*
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ChatRoom(chat_id: Id<Chat>) {
     val chatState = makeQueryState { ChatController.getChat(chat_id) }
@@ -64,19 +67,34 @@ fun ChatRoom(chat_id: Id<Chat>) {
                 .padding(top = 16.dp, bottom = 24.dp),
         ) {
             val (value, setValue) = remember { mutableStateOf("") }
-            CustomTextField(
-                value = value,
-                onValueChange = setValue,
-                label = { Text("Chat") },
-                modifier = Modifier.weight(1f),
-            )
-            Spacer(Modifier.width(16.dp))
-            CustomButton(
-                onClick = {
+            val allowSend = value.isNotBlank()
+            val sendChat = {
+                if (allowSend) {
                     ChatController.sendMessage(chat._id, value)
                     setValue("")
                     chatState.refetch()
                 }
+            }
+            CustomTextField(
+                value = value,
+                onValueChange = setValue,
+                label = { Text("Chat") },
+                modifier = Modifier
+                    .weight(1f)
+                    .onPreviewKeyEvent {
+                        when {
+                            it.type == KeyEventType.KeyDown && it.key == Key.Enter -> {
+                                sendChat()
+                                true
+                            }
+                            else -> false
+                        }
+                    },
+            )
+            Spacer(Modifier.width(16.dp))
+            CustomButton(
+                onClick = sendChat,
+                enabled = allowSend
             ) {
                 Text("Send")
             }
