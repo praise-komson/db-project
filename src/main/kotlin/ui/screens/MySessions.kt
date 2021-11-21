@@ -102,6 +102,8 @@ fun SessionRow(onOpen: () -> Unit, session: GetMySessions) {
             Text(
                 text = session.topic,
                 color = InkDarkest,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
                 style = RegularTightMedium
             )
             Text(
