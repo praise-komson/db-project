@@ -94,6 +94,7 @@ fun NewSession(
                     session = SessionRepository.insertSession(session)
                     // TODO: add friend?
                     SessionRepository.insertSessionParticipant(session.id, username)
+                    SessionRepository.insertSessionParticipant(session.id, service.expertId)
                     DatabaseHelper.conductCoinTransaction(session.id, username, -totalPrice, "pay to schedule session")
                 }
             }
