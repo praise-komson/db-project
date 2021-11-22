@@ -1,0 +1,1 @@
+CREATE INDEX my_request_index ON session (expert_id, status);
