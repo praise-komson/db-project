@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.router.Router
 import com.arkivanov.decompose.router.push
+import com.arkivanov.decompose.router.replaceCurrent
 import controller.ChatController
 import controller.UserController
 import db.GetFriends
@@ -55,9 +56,9 @@ fun CreateChat(router: Router<Configuration, Any>) {
             CustomButton(
                 onClick = {
                     val chat = ChatController.createChat(selectedMap.entries
-                        .filter { (username, selected) -> selected }
-                        .map{ (username, selected) -> username })
-                    router.push(Configuration.ChatRoom(chat))
+                        .filter { (_, selected) -> selected }
+                        .map{ (username, _) -> username })
+                    router.replaceCurrent(Configuration.ChatRoom(chat))
                 },
                 modifier = Modifier
                     .padding(vertical = 24.dp, horizontal = 16.dp)
