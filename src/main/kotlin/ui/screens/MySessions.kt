@@ -21,6 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import controller.UserController
 import db.GetMySessions
 import entity.Session
 import repository.SessionRepository
@@ -187,9 +188,11 @@ fun SessionRow(onOpen: () -> Unit, session: GetMySessions) {
                 }
             }
         }
-        Spacer(Modifier.width(12.dp))
-        IconButton( onClick = { onOpen() }) {
-            Icon(Icons.Default.MoreVert, "")
+        if (session.creator_id == UserController.username) {
+            Spacer(Modifier.width(12.dp))
+            IconButton(onClick = { onOpen() }) {
+                Icon(Icons.Default.MoreVert, "")
+            }
         }
     }
 }

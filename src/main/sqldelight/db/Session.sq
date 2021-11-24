@@ -4,6 +4,7 @@ SELECT
     status,
     topic,
     start_time,
+    creator_id,
     f.url AS expert_profile_pic_url
 FROM session_participant p
 INNER JOIN session s ON s.id = p.session_id
